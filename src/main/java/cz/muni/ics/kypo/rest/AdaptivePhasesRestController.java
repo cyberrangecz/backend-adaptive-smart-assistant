@@ -21,8 +21,10 @@ public class AdaptivePhasesRestController {
     }
 
     @GetMapping(path = "/")
-    public ResponseEntity<SuitableTaskResponseDto> getSuitableTaskInPhase(@RequestParam(value = "phaseX") int phaseX,
+    public ResponseEntity<SuitableTaskResponseDto> getSuitableTaskInPhase(@RequestParam(value = "definitionId") long definitionId,
+                                                                          @RequestParam(value = "instanceId") long instanceId,
+                                                                          @RequestParam(value = "phaseX") int phaseX,
                                                                           @RequestParam(value = "phaseXTasks") int phaseXTasks) {
-        return ResponseEntity.ok(adaptivePhasesService.computeSuitableTask(phaseX, phaseXTasks));
+        return ResponseEntity.ok(adaptivePhasesService.computeSuitableTask(definitionId, instanceId, phaseX, phaseXTasks));
     }
 }

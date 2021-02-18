@@ -4,15 +4,24 @@ import cz.muni.ics.kypo.api.SuitableTaskResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class AdaptivePhasesService {
 
-    @Autowired
-    public AdaptivePhasesService() {
+    private final ElasticSearchApiService elasticSearchApiService;
 
+    @Autowired
+    public AdaptivePhasesService(ElasticSearchApiService elasticSearchApiService) {
+        this.elasticSearchApiService = elasticSearchApiService;
     }
 
-    private double computeParticipantsPerformance(int phaseX) {
+    private double computeParticipantsPerformance(long definitionId, long instanceId, int phaseX) {
+        List<Map<String, Object>> eventsFromTrainingInstance = elasticSearchApiService.findAllEventsFromTrainingInstance(definitionId, instanceId);
+
+        // TODO find the proper information
+
         // get all the essential data from kypo-elasticsearch-service and other services..
         return 0.0;
     }
@@ -22,9 +31,9 @@ public class AdaptivePhasesService {
      * @param phaseXTasks the number of tasks in the phase X
      * @return the suitable task in a phase x
      */
-    public SuitableTaskResponseDto computeSuitableTask(int phaseX, int phaseXTasks) {
+    public SuitableTaskResponseDto computeSuitableTask(long definitionId, long instanceId, int phaseX, int phaseXTasks) {
         SuitableTaskResponseDto suitableTaskResponseDto = new SuitableTaskResponseDto();
-        double participantsPerformance = computeParticipantsPerformance(phaseX); // must be in interval <0,1>
+        double participantsPerformance = computeParticipantsPerformance(definitionId, instanceId, phaseX); // must be in interval <0,1>
         if (participantsPerformance == 0.0) {
             suitableTaskResponseDto.setSuitableTask(phaseXTasks);
             return suitableTaskResponseDto;
