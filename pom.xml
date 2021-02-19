@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cz.muni.ics.kypo</groupId>
-    <artifactId>kypo-smart-assistent</artifactId>
+    <artifactId>kypo-adaptive-smart-assistant</artifactId>
     <version>1.0.0</version>
-    <name>kypo-smart-assistent</name>
-    <description>Demo project for Spring Boot</description>
+    <name>kypo-adaptive-smart-assistant</name>
+    <description>KYPO Adaptive Smart Assistant</description>
 
     <properties>
         <java.version>11</java.version>
