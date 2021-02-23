@@ -33,7 +33,6 @@
         <swagger-annotations.version>1.5.22</swagger-annotations.version>
         <!-- javax validation -->
         <javax-validation.version>2.0.1.Final</javax-validation.version>
-        <spring-cloud-starter-oauth2.version>2.0.1.RELEASE</spring-cloud-starter-oauth2.version>
         <!-- path to proprietary repository -->
         <proprietary-repo-id>gitlab-maven</proprietary-repo-id>
         <!-- Add glassfish jaxb dependency to move to the OpenJDK 11 -->
@@ -64,9 +63,8 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-            <version>${spring-cloud-starter-oauth2.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
         <!-- necessary for OpenJDK 11-->
         <dependency>
@@ -120,6 +118,21 @@
             <artifactId>validation-api</artifactId>
             <version>${javax-validation.version}</version>
         </dependency>
+        <!--database-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- PostgreSQL driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -147,6 +160,12 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <!--Run migrations using mvn:flyway-->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
             </plugin>
         </plugins>
     </build>
