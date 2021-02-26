@@ -51,7 +51,7 @@ create_tag:
     - git push
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
-    changes:
+      changes:
       - VERSION.txt
   artifacts:
     paths:
