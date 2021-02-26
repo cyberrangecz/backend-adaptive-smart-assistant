@@ -24,6 +24,7 @@ create_tag:
   - apt-get install git -y
   - git config --global user.email "$GIT_USER_EMAIL"
   - git config --global user.name "$GIT_USER_NAME"
+  - git config --global push.followTags true
   - git remote set-url origin "$GIT_CLONE_URL"
   - git fetch
   - git checkout master
@@ -40,7 +41,6 @@ create_tag:
   - git commit -m "Updated Swagger documentation generated."
   # create new tag
   - git tag -a v$VERSION -m "$TAG_MESSAGE"
-  - git config --global push.followTags true
   - git push
   rules:
   - if: '$CI_COMMIT_BRANCH == "master"'
