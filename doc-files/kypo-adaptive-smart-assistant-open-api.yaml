@@ -1,0 +1,54 @@
+---
+swagger: "2.0"
+info:
+  version: "Version: 1.0.0"
+  title: "KYPO Adaptive Smart Assistant - API Reference"
+host: "localhost:8080"
+basePath: "/kypo-adaptive-smart-assistant/api/v1"
+schemes:
+- "http"
+- "https"
+paths:
+  /adaptive-phases/:
+    get:
+      operationId: "getSuitableTaskInPhase"
+      parameters:
+      - name: "definitionId"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "instanceId"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "phaseX"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "phaseXTasks"
+        in: "query"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SuitableTaskResponseDto"
+securityDefinitions:
+  bearerAuth:
+    description: "Obtain bearer token from OIDC provider and enter the token in the\
+      \ following field. Use format 'Bearer {token}'"
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  SuitableTaskResponseDto:
+    type: "object"
+    properties:
+      suitableTask:
+        type: "integer"
+        format: "int32"
