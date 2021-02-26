@@ -30,8 +30,8 @@ COPY /src /app/src
 
 WORKDIR /app
 # build KYPO smart assistant service
-RUN mvn clean install -DskipTests -Dproprietary-repo-url=$PROPRIETARY_REPO_URL
-COPY /app/target/$PROJECT_ARTIFACT_ID-*.jar /app/kypo-adaptive-smart-assistant.jar
+RUN mvn clean install -DskipTests -Dproprietary-repo-url=$PROPRIETARY_REPO_URL && \
+    cp /app/target/$PROJECT_ARTIFACT_ID-*.jar kypo-adaptive-smart-assistant.jar
 
 
 EXPOSE 8086
