@@ -26,9 +26,9 @@ create_tag:
     - git config --global user.name "$GIT_USER_NAME"
     - git remote set-url origin "$GIT_CLONE_URL"
     - git fetch
-    - git pull
+    - git pull origin master
     - git checkout master
-    - git pull
+    - git pull origin master
   script:
     - export VERSION=$(grep -oP '^([^\s]*)' $DEPLOYMENT_INFO_VERSION_FILE)
     - export TAG_MESSAGE=$(grep -oP '(?<=\s)[^\s].*' $DEPLOYMENT_INFO_VERSION_FILE)
@@ -37,20 +37,20 @@ create_tag:
     - git commit -am "Update pom.xml version based on GitLab tag. Done by CI."
     # generate swagger documentation
     - mvn clean compile -DskipTests -Dswagger.skip=false -Dproprietary-repo-url=$PROPRIETARY_REPO_URL
-    - git pull
+    - git pull origin master
     - git add doc-files/kypo-adaptive-smart-assistant-open-api.yaml
     - git commit -m "Updated Swagger documentation generated."
-    - git pull
+    - git pull origin master
     # update change log
     - LAST_TAG=$(git tag | head -1)
     - git log  --pretty=format:'%h -- %s' $LAST_TAG..HEAD --graph > CHANGELOG.md
-    - git pull
+    - git pull origin master
     - git add CHANGELOG.md
     - git commit -m "CHANGELOG.md file updated with commits between the current and previous tag. Done by CI."
-    - git pull
+    - git pull origin master
     - git push origin master
     # create new tag
-    - git pull
+    - git pull origin master
     - git tag -a v$VERSION -m "$TAG_MESSAGE"
     - git config --global push.followTags true
     - git push
