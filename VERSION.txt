@@ -1,1 +1,1 @@
-1.0.6 Postgres DB integrated.
+1.0.7 Postgres DB integrated.
