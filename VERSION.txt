@@ -1,1 +1,1 @@
-1.0.14 Gitlab CI configured to push images to Gitlab registry.
+1.0.15 Gitlab CI configured to push images to Gitlab registry.
