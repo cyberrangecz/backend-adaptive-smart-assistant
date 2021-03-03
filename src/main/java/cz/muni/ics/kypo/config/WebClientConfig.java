@@ -14,7 +14,6 @@ public class WebClientConfig {
     @Value("${elasticsearch-service.uri}")
     private String elasticsearchServiceURI;
 
-
     /**
      * Elasticsearch service web client.
      *

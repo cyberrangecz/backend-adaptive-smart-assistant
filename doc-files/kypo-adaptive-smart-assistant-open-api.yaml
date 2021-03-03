@@ -11,7 +11,7 @@ schemes:
 paths:
   /adaptive-phases/:
     get:
-      operationId: "getSuitableTaskInPhase"
+      operationId: "findSuitableTaskInPhase"
       parameters:
       - name: "definitionId"
         in: "query"
