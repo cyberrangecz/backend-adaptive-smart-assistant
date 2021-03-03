@@ -14,6 +14,8 @@ public class WebClientConfig {
     @Value("${elasticsearch-service.uri}")
     private String elasticsearchServiceURI;
 
+    @Value("${adaptive-training.uri}")
+    private String adaptiveTrainingServiceURI;
 
     /**
      * Elasticsearch service web client.
@@ -25,6 +27,23 @@ public class WebClientConfig {
     public WebClient elasticsearchServiceWebClient() {
         return WebClient.builder()
                 .baseUrl(elasticsearchServiceURI)
+                .defaultHeaders(headers -> {
+                    headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+                    headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+                })
+                .build();
+    }
+
+    /**
+     * Elasticsearch service web client.
+     *
+     * @return the web client
+     */
+    @Bean
+    @Qualifier("adaptiveTrainingWebClient")
+    public WebClient adaptiveTrainingWebClient() {
+        return WebClient.builder()
+                .baseUrl(adaptiveTrainingServiceURI)
                 .defaultHeaders(headers -> {
                     headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
                     headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
