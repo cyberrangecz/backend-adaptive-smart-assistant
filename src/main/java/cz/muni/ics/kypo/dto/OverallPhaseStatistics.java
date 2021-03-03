@@ -1,18 +1,22 @@
 package cz.muni.ics.kypo.dto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-// TODO this class should be taken from dependency on kypo-elasticsearch-service
+/**
+ * This class is taken from project kypo-elasticsearch-service.
+ */
 public class OverallPhaseStatistics {
     private Long phaseId;
     private Long taskId;
     private Long phaseTime;
-    private List<String> wrongAnswers;
+    private List<String> wrongAnswers = new ArrayList<>();
     private Boolean solutionDisplayed;
     private Long numberOfCommands;
-    private Map<String, Long> keywordsInCommands;
+    private Map<String, Long> keywordsInCommands = new HashMap<>();
 
     public Long getPhaseId() {
         return phaseId;
@@ -77,7 +81,7 @@ public class OverallPhaseStatistics {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof OverallPhaseStatistics)) return false;
         OverallPhaseStatistics that = (OverallPhaseStatistics) o;
         return Objects.equals(getPhaseId(), that.getPhaseId()) &&
                 Objects.equals(getTaskId(), that.getTaskId()) &&

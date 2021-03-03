@@ -55,16 +55,6 @@
         </dependency>
         -->
         <dependency>
-            <groupId>cz.muni.ics.kypo</groupId>
-            <artifactId>kypo-elasticsearch-service</artifactId>
-            <version>1.0.21</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.muni.ics.kypo</groupId>
-            <artifactId>kypo-adaptive-training</artifactId>
-            <version>1.0.7</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
