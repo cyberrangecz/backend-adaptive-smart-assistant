@@ -29,6 +29,8 @@ public class DecisionMatrixRowDTO {
     private long relatedPhaseId;
     @ApiModelProperty(value = "Number of commands that are allowed to use in a training phase", example = "10")
     private long allowedCommands;
+    @ApiModelProperty(value = "Number of wrong answers that are allowedin a training phase", example = "10")
+    private long allowedWrongAnswers;
 
     public long getId() {
         return id;
@@ -102,6 +104,14 @@ public class DecisionMatrixRowDTO {
         this.allowedCommands = allowedCommands;
     }
 
+    public long getAllowedWrongAnswers() {
+        return allowedWrongAnswers;
+    }
+
+    public void setAllowedWrongAnswers(long allowedWrongAnswers) {
+        this.allowedWrongAnswers = allowedWrongAnswers;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,12 +125,13 @@ public class DecisionMatrixRowDTO {
                 Double.compare(that.solutionDisplayed, solutionDisplayed) == 0 &&
                 Double.compare(that.wrongAnswers, wrongAnswers) == 0 &&
                 relatedPhaseId == that.relatedPhaseId &&
-                allowedCommands == that.allowedCommands;
+                allowedCommands == that.allowedCommands &&
+                allowedWrongAnswers == that.allowedWrongAnswers;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, order, questionnaireAnswered, keywordUsed, completedInTime, solutionDisplayed, wrongAnswers, relatedPhaseId, allowedCommands);
+        return Objects.hash(id, order, questionnaireAnswered, keywordUsed, completedInTime, solutionDisplayed, wrongAnswers, relatedPhaseId, allowedCommands, allowedWrongAnswers);
     }
 
     @Override
@@ -135,6 +146,7 @@ public class DecisionMatrixRowDTO {
                 ", wrongAnswers=" + wrongAnswers +
                 ", relatedPhaseId=" + relatedPhaseId +
                 ", allowedCommands=" + allowedCommands +
+                ", allowedWrongAnswers=" + allowedWrongAnswers +
                 '}';
     }
 }

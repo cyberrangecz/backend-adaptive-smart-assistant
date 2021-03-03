@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class AdaptivePhasesService {
 
-    private final static double ZERO = 0.0;
+    private static final double ZERO = 0.0;
     private final ElasticSearchApiService elasticSearchApiService;
 
     @Autowired
@@ -98,8 +98,7 @@ public class AdaptivePhasesService {
 
     private double evaluateWrongAnswers(DecisionMatrixRowDTO decisionMatrixRow, List<OverallPhaseStatistics> overAllPhaseStatistics) {
         OverallPhaseStatistics phaseStatistics = findPhaseStatisticsByPhaseId(decisionMatrixRow.getRelatedPhaseId(), overAllPhaseStatistics);
-        // TODO limit of wrong answers must be taken from training definition
-        return decisionMatrixRow.getWrongAnswers() * convertBooleanToBinaryDouble(phaseStatistics.getWrongAnswers().size() < 10);
+        return decisionMatrixRow.getWrongAnswers() * convertBooleanToBinaryDouble(phaseStatistics.getWrongAnswers().size() < decisionMatrixRow.getAllowedWrongAnswers());
     }
 
     private double convertBooleanToBinaryDouble(Boolean isCorrect) {
