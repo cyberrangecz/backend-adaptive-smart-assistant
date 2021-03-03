@@ -1,11 +1,11 @@
 package cz.muni.ics.kypo.service;
 
-import cz.muni.ics.kypo.api.SuitableTaskResponseDto;
+import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.api.exceptions.EntityErrorDetail;
 import cz.muni.ics.kypo.api.exceptions.EntityNotFoundException;
-import cz.muni.ics.kypo.dto.AdaptiveSmartAssistantInput;
-import cz.muni.ics.kypo.dto.DecisionMatrixRowDTO;
-import cz.muni.ics.kypo.dto.OverallPhaseStatistics;
+import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
+import cz.muni.ics.kypo.api.dto.DecisionMatrixRowDTO;
+import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

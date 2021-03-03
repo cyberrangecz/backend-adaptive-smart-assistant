@@ -1,4 +1,4 @@
-package cz.muni.ics.kypo.dto;
+package cz.muni.ics.kypo.api.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,12 +8,10 @@ import java.util.Objects;
 /**
  * This class is taken from project kypo-adaptive-training.
  */
-@ApiModel(
-        value = "DecisionMatrixRowDTO"
-)
+@ApiModel(value = "DecisionMatrixRowDTO")
 public class DecisionMatrixRowDTO {
 
-    @ApiModelProperty(value = "ID of decision matrix row", required = true, example = "1")
+    @ApiModelProperty(value = "ID of decision matrix row", required = true, position = 0, example = "1")
     private long id;
     @ApiModelProperty(value = "Order of row in a decision matrix", required = true, example = "1")
     private int order;

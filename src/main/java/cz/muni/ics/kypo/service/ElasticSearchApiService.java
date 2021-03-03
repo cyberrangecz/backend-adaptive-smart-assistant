@@ -1,6 +1,6 @@
 package cz.muni.ics.kypo.service;
 
-import cz.muni.ics.kypo.dto.OverallPhaseStatistics;
+import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
 import cz.muni.ics.kypo.exceptions.ElasticsearchServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
