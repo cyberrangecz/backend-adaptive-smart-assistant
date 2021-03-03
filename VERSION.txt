@@ -1,1 +1,1 @@
-1.0.15 Gitlab CI configured to push images to Gitlab registry.
+1.0.16 The computation of the suitable task added, the Gitlab commons-ci integrated including the caching of Maven dependencies.
