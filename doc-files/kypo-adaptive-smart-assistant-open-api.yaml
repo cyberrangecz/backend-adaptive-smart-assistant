@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  version: "Version: 1.0.16"
+  version: "Version: 1.0.17"
   title: "KYPO Adaptive Smart Assistant - API Reference"
 host: "localhost:8080"
 basePath: "/kypo-adaptive-smart-assistant/api/v1"
@@ -45,6 +45,11 @@ securityDefinitions:
 definitions:
   AdaptiveSmartAssistantInput:
     type: "object"
+    required:
+    - "phaseX"
+    - "phaseXTasks"
+    - "questionnaireCorrectlyAnswered"
+    - "trainingRunId"
     properties:
       trainingRunId:
         type: "integer"
@@ -62,6 +67,7 @@ definitions:
         format: "int32"
         example: 3
         description: "The number of tasks in a phase X."
+        minimum: 1
       phaseIds:
         type: "array"
         example: "[1,2,3,4,5]"
@@ -141,6 +147,11 @@ definitions:
         format: "int64"
         example: 10
         description: "Number of commands that are allowed to use in a training phase"
+      allowedWrongAnswers:
+        type: "integer"
+        format: "int64"
+        example: 10
+        description: "Number of wrong answers that are allowedin a training phase"
   SuitableTaskResponseDto:
     type: "object"
     properties:
