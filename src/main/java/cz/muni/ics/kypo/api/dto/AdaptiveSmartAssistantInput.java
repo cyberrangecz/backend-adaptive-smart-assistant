@@ -14,22 +14,22 @@ import java.util.Objects;
 public class AdaptiveSmartAssistantInput {
 
     @ApiModelProperty(value = "The identifier of a given training run representing a given participant", example = "1")
-    @NotNull(message = "Training run ID must be specified")
+    @NotNull(message = "{smartAssistantInput.trainingRunId.NotNull.message}")
     private Long trainingRunId;
     @ApiModelProperty(value = "The id of a phase X.", example = "5")
-    @NotNull(message = "Training phase ID must be specified")
+    @NotNull(message = "{smartAssistantInput.phaseX.NotNull.message}")
     private Long phaseX;
     @ApiModelProperty(value = "The number of tasks in a phase X.", example = "3")
-    @NotNull(message = "Number of tasks in specified training phase must be specified")
-    @Min(value = 1, message = "At least one task must be available in training phase")
+    @NotNull(message = "{smartAssistantInput.phaseXTasks.NotNull.message}")
+    @Min(value = 1, message = "{smartAssistantInput.phaseXTasks.Min.message}")
     private Integer phaseXTasks;
     @ApiModelProperty(value = "The list of phaseIds (the given phase including the given phases).", example = "[1,2,3,4,5]")
     private List<Long> phaseIds = new ArrayList<>();
     @ApiModelProperty(value = "The decision matrix with weights to compute the students' performance.")
-    @NotEmpty(message = "Decision matrix must be set")
+    @NotEmpty(message = "{smartAssistantInput.decisionMatrix.NotEmpty.message}")
     private List<DecisionMatrixRowDTO> decisionMatrix = new ArrayList<>();
     @ApiModelProperty(value = "The information if the questionnaire was correctly answered for a given phase.", example = "true")
-    @NotNull(message = "It must be defined whether the questionnaire prerequisites were met")
+    @NotNull(message = "{smartAssistantInput.questionnaireCorrectlyAnswered.NotNull.message}")
     private Boolean questionnaireCorrectlyAnswered;
 
     public Long getTrainingRunId() {
