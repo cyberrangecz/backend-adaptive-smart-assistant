@@ -1,1 +1,1 @@
-1.0.16 The computation of the suitable task added, the Gitlab commons-ci integrated including the caching of Maven dependencies.
+1.0.17 Add validation for information incoming from kypo2-training service.
