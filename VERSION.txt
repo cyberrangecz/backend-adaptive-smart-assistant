@@ -1,1 +1,1 @@
-1.0.17 Add validation for information incoming from kypo2-training service.
+1.0.18 Add localized error messages.
