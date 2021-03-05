@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class AdaptivePhasesService {
@@ -24,7 +27,8 @@ public class AdaptivePhasesService {
     }
 
     private double computeParticipantsPerformance(AdaptiveSmartAssistantInput smartAssistantInput) {
-        List<OverallPhaseStatistics> overAllPhaseStatistics = elasticSearchApiService.getOverAllPhaseStatistics(smartAssistantInput.getTrainingRunId(), smartAssistantInput.getPhaseIds());
+        Map<Long, OverallPhaseStatistics> overAllPhaseStatistics = elasticSearchApiService.getOverAllPhaseStatistics(smartAssistantInput.getTrainingRunId(), smartAssistantInput.getPhaseIds())
+                .stream().collect(Collectors.toMap(OverallPhaseStatistics::getPhaseId, Function.identity()));
         return evaluateParticipantPerformance(smartAssistantInput, overAllPhaseStatistics);
     }
 
@@ -45,41 +49,41 @@ public class AdaptivePhasesService {
         }
     }
 
-    private double evaluateParticipantPerformance(AdaptiveSmartAssistantInput smartAssistantInput, List<OverallPhaseStatistics> overAllPhaseStatistics) {
+    private double evaluateParticipantPerformance(AdaptiveSmartAssistantInput smartAssistantInput, Map<Long, OverallPhaseStatistics> overAllPhaseStatistics) {
         double sumOfAllWeights = ZERO;
         double participantWeightedPerformance = ZERO;
         for (DecisionMatrixRowDTO decisionMatrixRow : smartAssistantInput.getDecisionMatrix()) {
+            OverallPhaseStatistics relatedPhaseStatistics = Optional.ofNullable(overAllPhaseStatistics.get(decisionMatrixRow.getRelatedPhaseId()))
+                    .orElseThrow(() -> new EntityNotFoundException(new EntityErrorDetail(OverallPhaseStatistics.class, "id", Long.class, decisionMatrixRow.getRelatedPhaseId(), "Statistics for phase not found")));
             if (decisionMatrixRow.getQuestionnaireAnswered() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getQuestionnaireAnswered();
                 participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(smartAssistantInput.getQuestionnaireCorrectlyAnswered());
             }
             if (decisionMatrixRow.getCompletedInTime() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getCompletedInTime();
-                participantWeightedPerformance += evaluateCompletedInTime(decisionMatrixRow, overAllPhaseStatistics);
+                participantWeightedPerformance += evaluateCompletedInTime(decisionMatrixRow, relatedPhaseStatistics);
             }
             if (decisionMatrixRow.getKeywordUsed() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getKeywordUsed();
-                participantWeightedPerformance += evaluateKeywordUsed(decisionMatrixRow, overAllPhaseStatistics);
+                participantWeightedPerformance += evaluateKeywordUsed(decisionMatrixRow, relatedPhaseStatistics);
             }
             if (decisionMatrixRow.getSolutionDisplayed() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getSolutionDisplayed();
-                participantWeightedPerformance += evaluateSolutionDisplayed(decisionMatrixRow, overAllPhaseStatistics);
+                participantWeightedPerformance += evaluateSolutionDisplayed(decisionMatrixRow, relatedPhaseStatistics);
             }
             if (decisionMatrixRow.getWrongAnswers() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getWrongAnswers();
-                participantWeightedPerformance += evaluateWrongAnswers(decisionMatrixRow, overAllPhaseStatistics);
+                participantWeightedPerformance += evaluateWrongAnswers(decisionMatrixRow, relatedPhaseStatistics);
             }
         }
         return participantWeightedPerformance / sumOfAllWeights;
     }
 
-    private double evaluateCompletedInTime(DecisionMatrixRowDTO decisionMatrixRow, List<OverallPhaseStatistics> overAllPhaseStatistics) {
-        OverallPhaseStatistics phaseStatistics = findPhaseStatisticsByPhaseId(decisionMatrixRow.getRelatedPhaseId(), overAllPhaseStatistics);
+    private double evaluateCompletedInTime(DecisionMatrixRowDTO decisionMatrixRow, OverallPhaseStatistics phaseStatistics) {
         return decisionMatrixRow.getCompletedInTime() * convertBooleanToBinaryDouble(phaseStatistics.getPhaseTime() < 0);
     }
 
-    private double evaluateKeywordUsed(DecisionMatrixRowDTO decisionMatrixRow, List<OverallPhaseStatistics> overAllPhaseStatistics) {
-        OverallPhaseStatistics phaseStatistics = findPhaseStatisticsByPhaseId(decisionMatrixRow.getRelatedPhaseId(), overAllPhaseStatistics);
+    private double evaluateKeywordUsed(DecisionMatrixRowDTO decisionMatrixRow, OverallPhaseStatistics phaseStatistics) {
         long numberOfCommands = 0;
         if (!CollectionUtils.isEmpty(phaseStatistics.getKeywordsInCommands())) {
             numberOfCommands = phaseStatistics.getKeywordsInCommands()
@@ -91,13 +95,11 @@ public class AdaptivePhasesService {
         return decisionMatrixRow.getKeywordUsed() * convertBooleanToBinaryDouble(numberOfCommands < decisionMatrixRow.getAllowedCommands());
     }
 
-    private double evaluateSolutionDisplayed(DecisionMatrixRowDTO decisionMatrixRow, List<OverallPhaseStatistics> overAllPhaseStatistics) {
-        OverallPhaseStatistics phaseStatistics = findPhaseStatisticsByPhaseId(decisionMatrixRow.getRelatedPhaseId(), overAllPhaseStatistics);
+    private double evaluateSolutionDisplayed(DecisionMatrixRowDTO decisionMatrixRow, OverallPhaseStatistics phaseStatistics) {
         return decisionMatrixRow.getSolutionDisplayed() * convertBooleanToBinaryDoubleNegated(phaseStatistics.getSolutionDisplayed());
     }
 
-    private double evaluateWrongAnswers(DecisionMatrixRowDTO decisionMatrixRow, List<OverallPhaseStatistics> overAllPhaseStatistics) {
-        OverallPhaseStatistics phaseStatistics = findPhaseStatisticsByPhaseId(decisionMatrixRow.getRelatedPhaseId(), overAllPhaseStatistics);
+    private double evaluateWrongAnswers(DecisionMatrixRowDTO decisionMatrixRow, OverallPhaseStatistics phaseStatistics) {
         return decisionMatrixRow.getWrongAnswers() * convertBooleanToBinaryDouble(phaseStatistics.getWrongAnswers().size() < decisionMatrixRow.getAllowedWrongAnswers());
     }
 
@@ -109,10 +111,4 @@ public class AdaptivePhasesService {
         return Boolean.TRUE.equals(isCorrect) ? ZERO : 1.0;
     }
 
-    private OverallPhaseStatistics findPhaseStatisticsByPhaseId(long phaseId, List<OverallPhaseStatistics> overAllPhaseStatistics) {
-        return overAllPhaseStatistics.stream()
-                .filter(x -> x.getPhaseId().equals(phaseId))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException(new EntityErrorDetail(OverallPhaseStatistics.class, "id", Long.class, phaseId, "Phase not found")));
-    }
 }

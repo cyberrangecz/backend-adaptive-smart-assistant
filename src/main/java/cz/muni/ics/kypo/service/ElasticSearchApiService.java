@@ -23,7 +23,7 @@ public class ElasticSearchApiService {
         this.elasticsearchServiceWebClient = elasticsearchServiceWebClient;
     }
 
-    public Map<Long, OverallPhaseStatistics> getOverAllPhaseStatistics(long trainingRunId, List<Long> phaseIds) {
+    public List<OverallPhaseStatistics> getOverAllPhaseStatistics(long trainingRunId, List<Long> phaseIds) {
         try {
             return elasticsearchServiceWebClient
                     .post()
@@ -33,7 +33,7 @@ public class ElasticSearchApiService {
                             .build(trainingRunId)
                     )
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<Map<Long, OverallPhaseStatistics>>() {})
+                    .bodyToMono(new ParameterizedTypeReference<List<OverallPhaseStatistics>>() {})
                     .block();
         } catch (WebClientResponseException e) {
             throw new ElasticsearchServiceException("Could not retrieve wrong answers statistics from elastic for training run " + trainingRunId, e);
