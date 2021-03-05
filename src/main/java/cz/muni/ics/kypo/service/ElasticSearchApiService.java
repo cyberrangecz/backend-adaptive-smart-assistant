@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ElasticSearchApiService {
@@ -22,17 +23,17 @@ public class ElasticSearchApiService {
         this.elasticsearchServiceWebClient = elasticsearchServiceWebClient;
     }
 
-    public List<OverallPhaseStatistics> getOverAllPhaseStatistics(long trainingRunId, List<Long> phaseIds) {
+    public Map<Long, OverallPhaseStatistics> getOverAllPhaseStatistics(long trainingRunId, List<Long> phaseIds) {
         try {
             return elasticsearchServiceWebClient
                     .post()
                     .uri(uriBuilder -> uriBuilder
-                            .path("training-statistics/training-runs/{runId}/phases/events/wrong-answers")
+                            .path("training-statistics/training-runs/{runId}/phases/overall")
                             .queryParam("phaseIds", StringUtils.collectionToDelimitedString(phaseIds, ","))
                             .build(trainingRunId)
                     )
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<OverallPhaseStatistics>>() {})
+                    .bodyToMono(new ParameterizedTypeReference<Map<Long, OverallPhaseStatistics>>() {})
                     .block();
         } catch (WebClientResponseException e) {
             throw new ElasticsearchServiceException("Could not retrieve wrong answers statistics from elastic for training run " + trainingRunId, e);
