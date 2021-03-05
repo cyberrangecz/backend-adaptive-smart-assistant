@@ -1,1 +1,1 @@
-1.0.18 Add localized error messages.
+1.0.19 Changed URI path to ES service, refactoring of the methods, exception handling from the remote microservices.
