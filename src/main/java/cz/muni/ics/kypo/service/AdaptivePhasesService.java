@@ -1,11 +1,13 @@
 package cz.muni.ics.kypo.service;
 
-import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
-import cz.muni.ics.kypo.api.exceptions.EntityErrorDetail;
-import cz.muni.ics.kypo.api.exceptions.EntityNotFoundException;
 import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
 import cz.muni.ics.kypo.api.dto.DecisionMatrixRowDTO;
 import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
+import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
+import cz.muni.ics.kypo.api.exceptions.EntityErrorDetail;
+import cz.muni.ics.kypo.api.exceptions.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdaptivePhasesService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AdaptivePhasesService.class);
 
     private static final double ZERO = 0.0;
     private final ElasticSearchApiService elasticSearchApiService;
@@ -53,12 +57,15 @@ public class AdaptivePhasesService {
         double sumOfAllWeights = ZERO;
         double participantWeightedPerformance = ZERO;
         for (DecisionMatrixRowDTO decisionMatrixRow : smartAssistantInput.getDecisionMatrix()) {
-            OverallPhaseStatistics relatedPhaseStatistics = Optional.ofNullable(overAllPhaseStatistics.get(decisionMatrixRow.getRelatedPhaseId()))
-                    .orElseThrow(() -> new EntityNotFoundException(new EntityErrorDetail(OverallPhaseStatistics.class, "id", Long.class, decisionMatrixRow.getRelatedPhaseId(), "Statistics for phase not found")));
             if (decisionMatrixRow.getQuestionnaireAnswered() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getQuestionnaireAnswered();
                 participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(smartAssistantInput.getQuestionnaireCorrectlyAnswered());
             }
+            if (!elasticSearchDataAreNeeded(decisionMatrixRow)) {
+                continue;
+            }
+            OverallPhaseStatistics relatedPhaseStatistics = Optional.ofNullable(overAllPhaseStatistics.get(decisionMatrixRow.getRelatedPhaseId()))
+                    .orElseThrow(() -> new EntityNotFoundException(new EntityErrorDetail(OverallPhaseStatistics.class, "id", Long.class, decisionMatrixRow.getRelatedPhaseId(), "Statistics for phase not found")));
             if (decisionMatrixRow.getCompletedInTime() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getCompletedInTime();
                 participantWeightedPerformance += evaluateCompletedInTime(decisionMatrixRow, relatedPhaseStatistics);
@@ -75,6 +82,10 @@ public class AdaptivePhasesService {
                 sumOfAllWeights += decisionMatrixRow.getWrongAnswers();
                 participantWeightedPerformance += evaluateWrongAnswers(decisionMatrixRow, relatedPhaseStatistics);
             }
+        }
+        if (sumOfAllWeights == 0) {
+            LOG.error("No weights found for adaptive smart assistant input {}. The easiest task will be picked", smartAssistantInput);
+            return 0.0;
         }
         return participantWeightedPerformance / sumOfAllWeights;
     }
@@ -111,4 +122,10 @@ public class AdaptivePhasesService {
         return Boolean.TRUE.equals(isCorrect) ? ZERO : 1.0;
     }
 
+    private boolean elasticSearchDataAreNeeded(DecisionMatrixRowDTO decisionMatrixRow) {
+        return decisionMatrixRow.getCompletedInTime() > ZERO ||
+                decisionMatrixRow.getKeywordUsed() > ZERO ||
+                decisionMatrixRow.getSolutionDisplayed() > ZERO ||
+                decisionMatrixRow.getWrongAnswers() > ZERO;
+    }
 }
