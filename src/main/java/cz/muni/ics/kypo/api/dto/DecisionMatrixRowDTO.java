@@ -29,7 +29,7 @@ public class DecisionMatrixRowDTO {
     private long relatedPhaseId;
     @ApiModelProperty(value = "Number of commands that are allowed to use in a training phase", example = "10")
     private long allowedCommands;
-    @ApiModelProperty(value = "Number of wrong answers that are allowedin a training phase", example = "10")
+    @ApiModelProperty(value = "Number of wrong answers that are allowed in a training phase", example = "10")
     private long allowedWrongAnswers;
 
     public long getId() {

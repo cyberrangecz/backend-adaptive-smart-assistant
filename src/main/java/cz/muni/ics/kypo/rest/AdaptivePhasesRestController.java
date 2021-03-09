@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/adaptive-phases")
 @Api(value = "/adaptive-phases",
-        tags = "Phases",
+        tags = "Adaptive Phases",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         authorizations = @Authorization(value = "bearerAuth"))
 public class AdaptivePhasesRestController {
