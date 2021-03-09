@@ -22,7 +22,7 @@ public class WebClientConfig {
     @Value("${elasticsearch-service.uri}")
     private String elasticsearchServiceURI;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public WebClientConfig(@Qualifier("webClientObjectMapper") ObjectMapper objectMapper) {

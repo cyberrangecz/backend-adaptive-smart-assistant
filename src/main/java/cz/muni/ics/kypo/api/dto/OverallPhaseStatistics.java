@@ -1,5 +1,8 @@
 package cz.muni.ics.kypo.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,6 +16,7 @@ import java.util.Objects;
  * This class is taken from project kypo-elasticsearch-service.
  */
 @ApiModel(value = "OverallPhaseStatistics")
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class OverallPhaseStatistics {
 
     @ApiModelProperty(value = "ID of a phase", example = "1")
