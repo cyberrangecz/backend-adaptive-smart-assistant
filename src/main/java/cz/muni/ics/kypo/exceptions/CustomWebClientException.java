@@ -1,6 +1,6 @@
 package cz.muni.ics.kypo.exceptions;
 
-import cz.muni.ics.kypo.api.exceptions.error.api.ApiSubError;
+import cz.muni.ics.kypo.api.exceptions.error.ApiSubError;
 import org.springframework.http.HttpStatus;
 
 /**

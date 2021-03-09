@@ -1,4 +1,4 @@
-package cz.muni.ics.kypo.api.exceptions.error.api;
+package cz.muni.ics.kypo.api.exceptions.error;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.muni.ics.kypo.api.exceptions.EntityErrorDetail;
