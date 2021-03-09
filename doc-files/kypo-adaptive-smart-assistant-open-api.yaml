@@ -1,12 +1,12 @@
 ---
 swagger: "2.0"
 info:
-  version: "Version: 1.0.19"
+  version: "Version: 1.0.20"
   title: "KYPO Adaptive Smart Assistant - API Reference"
 host: "localhost:8080"
 basePath: "/kypo-adaptive-smart-assistant/api/v1"
 tags:
-- name: "Phases"
+- name: "Adaptive Phases"
 schemes:
 - "http"
 - "https"
@@ -14,7 +14,7 @@ paths:
   /adaptive-phases:
     post:
       tags:
-      - "Phases"
+      - "Adaptive Phases"
       summary: "Find a suitable task"
       description: "Find a suitable task for a participant trying to get the next\
         \ phase"
@@ -151,7 +151,7 @@ definitions:
         type: "integer"
         format: "int64"
         example: 10
-        description: "Number of wrong answers that are allowedin a training phase"
+        description: "Number of wrong answers that are allowed in a training phase"
   SuitableTaskResponseDto:
     type: "object"
     properties:
