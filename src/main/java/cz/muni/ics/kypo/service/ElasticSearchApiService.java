@@ -28,7 +28,7 @@ public class ElasticSearchApiService {
             return elasticsearchServiceWebClient
                     .post()
                     .uri(uriBuilder -> uriBuilder
-                            .path("training-statistics/training-runs/{runId}/phases/overall")
+                            .path("/training-statistics/training-runs/{runId}/phases/overall")
                             .queryParam("phaseIds", StringUtils.collectionToDelimitedString(phaseIds, ","))
                             .build(trainingRunId)
                     )
