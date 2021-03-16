@@ -1,1 +1,1 @@
-1.0.20 Basic unit tests, handling of the missing exceptions, fix URI path to elasticsearch service, added swagger.
+1.0.21 Handle microservice errors, added security header to web client.
