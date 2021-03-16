@@ -1,7 +1,9 @@
 package cz.muni.ics.kypo.service;
 
 import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
+import cz.muni.ics.kypo.exceptions.CustomWebClientException;
 import cz.muni.ics.kypo.exceptions.ElasticsearchServiceException;
+import cz.muni.ics.kypo.exceptions.MicroserviceApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
@@ -35,8 +37,8 @@ public class ElasticSearchApiService {
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<OverallPhaseStatistics>>() {})
                     .block();
-        } catch (WebClientResponseException e) {
-            throw new ElasticsearchServiceException("Could not retrieve wrong answers statistics from elastic for training run " + trainingRunId, e);
+        } catch (CustomWebClientException ex) {
+            throw new MicroserviceApiException("Could not retrieve wrong answers statistics from elastic for training run " + trainingRunId, ex.getApiSubError());
         }
     }
 }
