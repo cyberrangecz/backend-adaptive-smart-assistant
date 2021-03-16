@@ -1,1 +1,1 @@
-1.0.21 Handle microservice errors, added security header to web client.
+1.0.22 Fix authentication header in HTTP requests to elasticsearch service.
