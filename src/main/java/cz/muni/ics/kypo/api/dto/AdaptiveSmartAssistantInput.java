@@ -28,9 +28,6 @@ public class AdaptiveSmartAssistantInput {
     @ApiModelProperty(value = "The decision matrix with weights to compute the students' performance.")
     @NotEmpty(message = "{smartAssistantInput.decisionMatrix.NotEmpty.message}")
     private List<DecisionMatrixRowDTO> decisionMatrix = new ArrayList<>();
-    @ApiModelProperty(value = "The information if the questionnaire was correctly answered for a given phase.", example = "true")
-    @NotNull(message = "{smartAssistantInput.questionnaireCorrectlyAnswered.NotNull.message}")
-    private Boolean questionnaireCorrectlyAnswered;
 
     public Long getTrainingRunId() {
         return trainingRunId;
@@ -72,13 +69,6 @@ public class AdaptiveSmartAssistantInput {
         this.decisionMatrix = decisionMatrix;
     }
 
-    public Boolean getQuestionnaireCorrectlyAnswered() {
-        return questionnaireCorrectlyAnswered;
-    }
-
-    public void setQuestionnaireCorrectlyAnswered(Boolean questionnaireCorrectlyAnswered) {
-        this.questionnaireCorrectlyAnswered = questionnaireCorrectlyAnswered;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -89,13 +79,12 @@ public class AdaptiveSmartAssistantInput {
                 Objects.equals(phaseX, that.phaseX) &&
                 Objects.equals(phaseXTasks, that.phaseXTasks) &&
                 Objects.equals(phaseIds, that.phaseIds) &&
-                Objects.equals(decisionMatrix, that.decisionMatrix) &&
-                Objects.equals(questionnaireCorrectlyAnswered, that.questionnaireCorrectlyAnswered);
+                Objects.equals(decisionMatrix, that.decisionMatrix);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(trainingRunId, phaseX, phaseXTasks, phaseIds, decisionMatrix, questionnaireCorrectlyAnswered);
+        return Objects.hash(trainingRunId, phaseX, phaseXTasks, phaseIds, decisionMatrix);
     }
 
     @Override
@@ -106,7 +95,6 @@ public class AdaptiveSmartAssistantInput {
                 ", phaseXTasks=" + phaseXTasks +
                 ", phaseIds=" + phaseIds +
                 ", decisionMatrix=" + decisionMatrix +
-                ", questionnaireCorrectlyAnswered=" + questionnaireCorrectlyAnswered +
                 '}';
     }
 }

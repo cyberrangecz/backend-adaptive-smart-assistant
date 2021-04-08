@@ -59,7 +59,7 @@ public class AdaptivePhasesService {
         for (DecisionMatrixRowDTO decisionMatrixRow : smartAssistantInput.getDecisionMatrix()) {
             if (decisionMatrixRow.getQuestionnaireAnswered() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getQuestionnaireAnswered();
-                participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(smartAssistantInput.getQuestionnaireCorrectlyAnswered());
+                participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(decisionMatrixRow.isQuestionnaireCorrectlyAnswered());
             }
             if (!elasticSearchDataAreNeeded(decisionMatrixRow)) {
                 continue;
