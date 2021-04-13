@@ -65,7 +65,6 @@ public class TestDataFactory {
         adaptiveSmartAssistantInput.setPhaseX(1L);
         adaptiveSmartAssistantInput.setPhaseXTasks(3);
         adaptiveSmartAssistantInput.setPhaseIds(List.of(1L));
-        adaptiveSmartAssistantInput.setQuestionnaireCorrectlyAnswered(true);
         adaptiveSmartAssistantInput.setTrainingRunId(1L);
         adaptiveSmartAssistantInput.setDecisionMatrix(List.of(getDecisionMatrixRowOnlyQuestionnaireMatters()));
         return adaptiveSmartAssistantInput;
@@ -76,7 +75,6 @@ public class TestDataFactory {
         adaptiveSmartAssistantInput.setPhaseX(2L);
         adaptiveSmartAssistantInput.setPhaseXTasks(3);
         adaptiveSmartAssistantInput.setPhaseIds(List.of(2L));
-        adaptiveSmartAssistantInput.setQuestionnaireCorrectlyAnswered(true);
         adaptiveSmartAssistantInput.setTrainingRunId(1L);
         adaptiveSmartAssistantInput.setDecisionMatrix(List.of(getDecisionMatrixRowOnlyQuestionnaireMatters(), getDecisionMatrixRowEverythingMatters()));
         return adaptiveSmartAssistantInput;
@@ -87,7 +85,6 @@ public class TestDataFactory {
         adaptiveSmartAssistantInput.setPhaseX(2L);
         adaptiveSmartAssistantInput.setPhaseXTasks(5);
         adaptiveSmartAssistantInput.setPhaseIds(List.of(2L));
-        adaptiveSmartAssistantInput.setQuestionnaireCorrectlyAnswered(false);
         adaptiveSmartAssistantInput.setTrainingRunId(1L);
         adaptiveSmartAssistantInput.setDecisionMatrix(List.of(getDecisionMatrixRowOnlyQuestionnaireMatters(), getDecisionMatrixRowEverythingMatters()));
         return adaptiveSmartAssistantInput;
@@ -98,7 +95,6 @@ public class TestDataFactory {
         adaptiveSmartAssistantInput.setPhaseX(2L);
         adaptiveSmartAssistantInput.setPhaseXTasks(5);
         adaptiveSmartAssistantInput.setPhaseIds(List.of(2L));
-        adaptiveSmartAssistantInput.setQuestionnaireCorrectlyAnswered(false);
         adaptiveSmartAssistantInput.setTrainingRunId(1L);
         adaptiveSmartAssistantInput.setDecisionMatrix(List.of(getDecisionMatrixRowOnlyQuestionnaireMatters(), getDecisionMatrixRowEverythingMattersInDifferentWeights()));
         return adaptiveSmartAssistantInput;
@@ -109,7 +105,6 @@ public class TestDataFactory {
         adaptiveSmartAssistantInput.setPhaseX(1L);
         adaptiveSmartAssistantInput.setPhaseXTasks(3);
         adaptiveSmartAssistantInput.setPhaseIds(List.of(1L));
-        adaptiveSmartAssistantInput.setQuestionnaireCorrectlyAnswered(true);
         adaptiveSmartAssistantInput.setTrainingRunId(1L);
         adaptiveSmartAssistantInput.setDecisionMatrix(List.of(getDecisionMatrixRowZeroWeights()));
         return adaptiveSmartAssistantInput;
@@ -140,6 +135,7 @@ public class TestDataFactory {
         decisionMatrixRowDTO.setCompletedInTime(0);
         decisionMatrixRowDTO.setKeywordUsed(0);
         decisionMatrixRowDTO.setQuestionnaireAnswered(1);
+        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(false);
         decisionMatrixRowDTO.setSolutionDisplayed(0);
         decisionMatrixRowDTO.setWrongAnswers(0);
         return decisionMatrixRowDTO;
@@ -153,6 +149,7 @@ public class TestDataFactory {
         decisionMatrixRowDTO.setCompletedInTime(1);
         decisionMatrixRowDTO.setKeywordUsed(1);
         decisionMatrixRowDTO.setQuestionnaireAnswered(1);
+        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(true);
         decisionMatrixRowDTO.setSolutionDisplayed(1);
         decisionMatrixRowDTO.setWrongAnswers(1);
         decisionMatrixRowDTO.setAllowedCommands(10);
@@ -168,6 +165,7 @@ public class TestDataFactory {
         decisionMatrixRowDTO.setCompletedInTime(0.3);
         decisionMatrixRowDTO.setKeywordUsed(0.9);
         decisionMatrixRowDTO.setQuestionnaireAnswered(0.8);
+        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(false);
         decisionMatrixRowDTO.setSolutionDisplayed(0.75);
         decisionMatrixRowDTO.setWrongAnswers(0.25);
         decisionMatrixRowDTO.setAllowedCommands(10);
@@ -182,6 +180,7 @@ public class TestDataFactory {
         decisionMatrixRowDTO.setCompletedInTime(0);
         decisionMatrixRowDTO.setKeywordUsed(0);
         decisionMatrixRowDTO.setQuestionnaireAnswered(0);
+        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(true);
         decisionMatrixRowDTO.setSolutionDisplayed(0);
         decisionMatrixRowDTO.setWrongAnswers(0);
         decisionMatrixRowDTO.setAllowedCommands(10);

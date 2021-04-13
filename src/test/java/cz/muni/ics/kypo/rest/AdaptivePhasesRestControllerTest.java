@@ -64,7 +64,7 @@ class AdaptivePhasesRestControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         SuitableTaskResponseDto suitableTaskResponseDto = ObjectConverter.convertJsonToObject(response.getContentAsString(), SuitableTaskResponseDto.class);
-        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseOne())));
+        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseThree())));
     }
 
     @Test
