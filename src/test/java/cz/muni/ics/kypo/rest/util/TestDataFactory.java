@@ -116,6 +116,12 @@ public class TestDataFactory {
         return suitableTaskResponseDto;
     }
 
+    public SuitableTaskResponseDto getSuitableTaskResponseTwo() {
+        SuitableTaskResponseDto suitableTaskResponseDto = new SuitableTaskResponseDto();
+        suitableTaskResponseDto.setSuitableTask(2);
+        return suitableTaskResponseDto;
+    }
+
     public SuitableTaskResponseDto getSuitableTaskResponseThree() {
         SuitableTaskResponseDto suitableTaskResponseDto = new SuitableTaskResponseDto();
         suitableTaskResponseDto.setSuitableTask(3);
