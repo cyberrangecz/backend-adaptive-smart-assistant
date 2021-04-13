@@ -1,5 +1,6 @@
 package cz.muni.ics.kypo.rest;
 
+import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
 import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.api.exceptions.error.ApiEntityError;
 import cz.muni.ics.kypo.handler.CustomRestExceptionHandler;
@@ -76,7 +77,7 @@ class AdaptivePhasesRestControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         SuitableTaskResponseDto suitableTaskResponseDto = ObjectConverter.convertJsonToObject(response.getContentAsString(), SuitableTaskResponseDto.class);
-        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseOne())));
+        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseTwo())));
     }
 
     @Test
@@ -88,7 +89,7 @@ class AdaptivePhasesRestControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         SuitableTaskResponseDto suitableTaskResponseDto = ObjectConverter.convertJsonToObject(response.getContentAsString(), SuitableTaskResponseDto.class);
-        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseFive())));
+        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseThree())));
     }
 
     @Test
@@ -100,7 +101,7 @@ class AdaptivePhasesRestControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         SuitableTaskResponseDto suitableTaskResponseDto = ObjectConverter.convertJsonToObject(response.getContentAsString(), SuitableTaskResponseDto.class);
-        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseThree())));
+        assertThat(suitableTaskResponseDto, is(equalTo(testDataFactory.getSuitableTaskResponseFive())));
     }
 
     @Test
@@ -117,10 +118,12 @@ class AdaptivePhasesRestControllerTest {
 
     @Test
     void findSuitableTask_wrongPhaseIds() throws Exception {
+        AdaptiveSmartAssistantInput adaptiveSmartAssistantInput = testDataFactory.getAdaptiveSmartAssistantInput2();
+        adaptiveSmartAssistantInput.getDecisionMatrix().get(0).setCompletedInTime(1L);
         given(elasticSearchApiService.getOverAllPhaseStatistics(anyLong(), anyList())).willReturn(testDataFactory.getOverallPhaseStatisticsWrongPhaseId());
         MockHttpServletResponse response = mvc.perform(post("/adaptive-phases")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(ObjectConverter.convertObjectToJson(testDataFactory.getAdaptiveSmartAssistantInput2())))
+                .content(ObjectConverter.convertObjectToJson(adaptiveSmartAssistantInput)))
                 .andExpect(status().isNotFound())
                 .andReturn().getResponse();
         ApiEntityError apiEntityError = ObjectConverter.convertJsonToObject(response.getContentAsString(), ApiEntityError.class);
