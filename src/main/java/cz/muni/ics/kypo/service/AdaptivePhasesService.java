@@ -56,10 +56,14 @@ public class AdaptivePhasesService {
     private double evaluateParticipantPerformance(AdaptiveSmartAssistantInput smartAssistantInput, Map<Long, OverallPhaseStatistics> overAllPhaseStatistics) {
         double sumOfAllWeights = ZERO;
         double participantWeightedPerformance = ZERO;
+        long currentPhaseId = smartAssistantInput.getDecisionMatrix().get(smartAssistantInput.getDecisionMatrix().size() - 1).getRelatedPhaseId();
         for (DecisionMatrixRowDTO decisionMatrixRow : smartAssistantInput.getDecisionMatrix()) {
             if (decisionMatrixRow.getQuestionnaireAnswered() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getQuestionnaireAnswered();
                 participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(decisionMatrixRow.isQuestionnaireCorrectlyAnswered());
+            }
+            if(decisionMatrixRow.getRelatedPhaseId() == currentPhaseId) {
+                break;
             }
             if (!elasticSearchDataAreNeeded(decisionMatrixRow)) {
                 continue;
