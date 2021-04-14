@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  version: "Version: 1.0.22"
+  version: "Version: 1.0.23"
   title: "KYPO Adaptive Smart Assistant - API Reference"
 host: "localhost:8080"
 basePath: "/kypo-adaptive-smart-assistant/api/v1"
@@ -48,7 +48,6 @@ definitions:
     required:
     - "phaseX"
     - "phaseXTasks"
-    - "questionnaireCorrectlyAnswered"
     - "trainingRunId"
     properties:
       trainingRunId:
@@ -80,11 +79,6 @@ definitions:
         description: "The decision matrix with weights to compute the students' performance."
         items:
           $ref: "#/definitions/DecisionMatrixRowDTO"
-      questionnaireCorrectlyAnswered:
-        type: "boolean"
-        example: true
-        description: "The information if the questionnaire was correctly answered\
-          \ for a given phase."
   DecisionMatrixRowDTO:
     type: "object"
     required:
@@ -113,6 +107,11 @@ definitions:
         example: 0.5
         description: "It determines how important the answers of the questions in\
           \ questionnaires are"
+      questionnaireCorrectlyAnswered:
+        type: "boolean"
+        example: true
+        description: "The information if the questionnaire was correctly answered\
+          \ for a given phase."
       keywordUsed:
         type: "number"
         format: "double"
