@@ -102,15 +102,7 @@ public class AdaptivePhasesService {
     }
 
     private double evaluateKeywordUsed(DecisionMatrixRowDTO decisionMatrixRow, OverallPhaseStatistics phaseStatistics) {
-        long numberOfCommands = 0;
-        if (!CollectionUtils.isEmpty(phaseStatistics.getKeywordsInCommands())) {
-            numberOfCommands = phaseStatistics.getKeywordsInCommands()
-                    .values()
-                    .stream()
-                    .mapToLong(Long::valueOf)
-                    .sum();
-        }
-        return decisionMatrixRow.getKeywordUsed() * convertBooleanToBinaryDouble(numberOfCommands < decisionMatrixRow.getAllowedCommands());
+        return decisionMatrixRow.getKeywordUsed() * convertBooleanToBinaryDouble(phaseStatistics.getNumberOfCommands() < decisionMatrixRow.getAllowedCommands());
     }
 
     private double evaluateSolutionDisplayed(DecisionMatrixRowDTO decisionMatrixRow, OverallPhaseStatistics phaseStatistics) {
