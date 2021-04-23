@@ -18,8 +18,6 @@ public class DecisionMatrixRowDTO {
     private int order;
     @ApiModelProperty(value = "It determines how important the answers of the questions in questionnaires are", required = true, example = "0.5")
     private double questionnaireAnswered;
-    @ApiModelProperty(value = "The information if the questionnaire was correctly answered for a given phase.", example = "true")
-    private boolean questionnaireCorrectlyAnswered;
     @ApiModelProperty(value = "It determines how important it is whether the player used the keyword", required = true, example = "0.5")
     private double keywordUsed;
     @ApiModelProperty(value = "It determines how important it is whether the player completed the task in time", required = true, example = "0.5")
@@ -28,8 +26,8 @@ public class DecisionMatrixRowDTO {
     private double solutionDisplayed;
     @ApiModelProperty(value = "It determines how important the number of wrong answers are", required = true, example = "0.5")
     private double wrongAnswers;
-    @ApiModelProperty(value = "ID of phase (usually training phase) the decision matrix row is related to", required = true, example = "1")
-    private long relatedPhaseId;
+    @ApiModelProperty(value = "Info about phase (usually training phase) the decision matrix row is related to", required = true, example = "1")
+    private RelatedPhaseInfoDTO relatedPhaseInfo;
     @ApiModelProperty(value = "Number of commands that are allowed to use in a training phase", example = "10")
     private long allowedCommands;
     @ApiModelProperty(value = "Number of wrong answers that are allowed in a training phase", example = "10")
@@ -57,14 +55,6 @@ public class DecisionMatrixRowDTO {
 
     public void setQuestionnaireAnswered(double questionnaireAnswered) {
         this.questionnaireAnswered = questionnaireAnswered;
-    }
-
-    public boolean isQuestionnaireCorrectlyAnswered() {
-        return questionnaireCorrectlyAnswered;
-    }
-
-    public void setQuestionnaireCorrectlyAnswered(boolean questionnaireCorrectlyAnswered) {
-        this.questionnaireCorrectlyAnswered = questionnaireCorrectlyAnswered;
     }
 
     public double getKeywordUsed() {
@@ -99,12 +89,12 @@ public class DecisionMatrixRowDTO {
         this.wrongAnswers = wrongAnswers;
     }
 
-    public long getRelatedPhaseId() {
-        return relatedPhaseId;
+    public RelatedPhaseInfoDTO getRelatedPhaseInfo() {
+        return relatedPhaseInfo;
     }
 
-    public void setRelatedPhaseId(long relatedPhaseId) {
-        this.relatedPhaseId = relatedPhaseId;
+    public void setRelatedPhaseInfo(RelatedPhaseInfoDTO relatedPhaseInfo) {
+        this.relatedPhaseInfo = relatedPhaseInfo;
     }
 
     public long getAllowedCommands() {
@@ -135,14 +125,13 @@ public class DecisionMatrixRowDTO {
                 Double.compare(that.completedInTime, completedInTime) == 0 &&
                 Double.compare(that.solutionDisplayed, solutionDisplayed) == 0 &&
                 Double.compare(that.wrongAnswers, wrongAnswers) == 0 &&
-                relatedPhaseId == that.relatedPhaseId &&
                 allowedCommands == that.allowedCommands &&
                 allowedWrongAnswers == that.allowedWrongAnswers;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, order, questionnaireAnswered, keywordUsed, completedInTime, solutionDisplayed, wrongAnswers, relatedPhaseId, allowedCommands, allowedWrongAnswers);
+        return Objects.hash(id, order, questionnaireAnswered, keywordUsed, completedInTime, solutionDisplayed, wrongAnswers, allowedCommands, allowedWrongAnswers);
     }
 
     @Override
@@ -155,7 +144,6 @@ public class DecisionMatrixRowDTO {
                 ", completedInTime=" + completedInTime +
                 ", solutionDisplayed=" + solutionDisplayed +
                 ", wrongAnswers=" + wrongAnswers +
-                ", relatedPhaseId=" + relatedPhaseId +
                 ", allowedCommands=" + allowedCommands +
                 ", allowedWrongAnswers=" + allowedWrongAnswers +
                 '}';

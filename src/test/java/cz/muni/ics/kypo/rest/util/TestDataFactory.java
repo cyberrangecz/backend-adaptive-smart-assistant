@@ -1,9 +1,6 @@
 package cz.muni.ics.kypo.rest.util;
 
-import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
-import cz.muni.ics.kypo.api.dto.DecisionMatrixRowDTO;
-import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
-import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
+import cz.muni.ics.kypo.api.dto.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -141,7 +138,7 @@ public class TestDataFactory {
         decisionMatrixRowDTO.setCompletedInTime(0);
         decisionMatrixRowDTO.setKeywordUsed(0);
         decisionMatrixRowDTO.setQuestionnaireAnswered(1);
-        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(false);
+        decisionMatrixRowDTO.setRelatedPhaseInfo(getRelatedPhaseInfo(1L, 5,false));
         decisionMatrixRowDTO.setSolutionDisplayed(0);
         decisionMatrixRowDTO.setWrongAnswers(0);
         return decisionMatrixRowDTO;
@@ -151,11 +148,10 @@ public class TestDataFactory {
         DecisionMatrixRowDTO decisionMatrixRowDTO = new DecisionMatrixRowDTO();
         decisionMatrixRowDTO.setId(2);
         decisionMatrixRowDTO.setOrder(1);
-        decisionMatrixRowDTO.setRelatedPhaseId(2L);
         decisionMatrixRowDTO.setCompletedInTime(1);
         decisionMatrixRowDTO.setKeywordUsed(1);
         decisionMatrixRowDTO.setQuestionnaireAnswered(1);
-        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(true);
+        decisionMatrixRowDTO.setRelatedPhaseInfo(getRelatedPhaseInfo(2L, 7, true));
         decisionMatrixRowDTO.setSolutionDisplayed(1);
         decisionMatrixRowDTO.setWrongAnswers(1);
         decisionMatrixRowDTO.setAllowedCommands(10);
@@ -167,11 +163,10 @@ public class TestDataFactory {
         DecisionMatrixRowDTO decisionMatrixRowDTO = new DecisionMatrixRowDTO();
         decisionMatrixRowDTO.setId(2);
         decisionMatrixRowDTO.setOrder(1);
-        decisionMatrixRowDTO.setRelatedPhaseId(2L);
         decisionMatrixRowDTO.setCompletedInTime(0.3);
         decisionMatrixRowDTO.setKeywordUsed(0.9);
         decisionMatrixRowDTO.setQuestionnaireAnswered(0.8);
-        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(false);
+        decisionMatrixRowDTO.setRelatedPhaseInfo(getRelatedPhaseInfo(2L, 10, false));
         decisionMatrixRowDTO.setSolutionDisplayed(0.75);
         decisionMatrixRowDTO.setWrongAnswers(0.25);
         decisionMatrixRowDTO.setAllowedCommands(10);
@@ -186,11 +181,19 @@ public class TestDataFactory {
         decisionMatrixRowDTO.setCompletedInTime(0);
         decisionMatrixRowDTO.setKeywordUsed(0);
         decisionMatrixRowDTO.setQuestionnaireAnswered(0);
-        decisionMatrixRowDTO.setQuestionnaireCorrectlyAnswered(true);
+        decisionMatrixRowDTO.setRelatedPhaseInfo(getRelatedPhaseInfo(1L, 5, true));
         decisionMatrixRowDTO.setSolutionDisplayed(0);
         decisionMatrixRowDTO.setWrongAnswers(0);
         decisionMatrixRowDTO.setAllowedCommands(10);
         decisionMatrixRowDTO.setAllowedWrongAnswers(3);
         return decisionMatrixRowDTO;
+    }
+
+    private RelatedPhaseInfoDTO getRelatedPhaseInfo(Long phaseId, int estimatedTime, boolean correctlyAnsweredRelatedQuestions) {
+        RelatedPhaseInfoDTO relatedPhaseInfoDTO = new RelatedPhaseInfoDTO();
+        relatedPhaseInfoDTO.setId(phaseId);
+        relatedPhaseInfoDTO.setEstimatedPhaseTime(estimatedTime);
+        relatedPhaseInfoDTO.setCorrectlyAnsweredRelatedQuestions(correctlyAnsweredRelatedQuestions);
+        return relatedPhaseInfoDTO;
     }
 }

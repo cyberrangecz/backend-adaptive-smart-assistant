@@ -6,9 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @ApiModel(value = "AdaptiveSmartAssistantInput")
 public class AdaptiveSmartAssistantInput {
