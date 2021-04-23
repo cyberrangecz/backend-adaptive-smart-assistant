@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  version: "Version: 1.0.23"
+  version: "Version: 1.0.24"
   title: "KYPO Adaptive Smart Assistant - API Reference"
 host: "localhost:8080"
 basePath: "/kypo-adaptive-smart-assistant/api/v1"
@@ -87,7 +87,7 @@ definitions:
     - "keywordUsed"
     - "order"
     - "questionnaireAnswered"
-    - "relatedPhaseId"
+    - "relatedPhaseInfo"
     - "solutionDisplayed"
     - "wrongAnswers"
     properties:
@@ -107,11 +107,6 @@ definitions:
         example: 0.5
         description: "It determines how important the answers of the questions in\
           \ questionnaires are"
-      questionnaireCorrectlyAnswered:
-        type: "boolean"
-        example: true
-        description: "The information if the questionnaire was correctly answered\
-          \ for a given phase."
       keywordUsed:
         type: "number"
         format: "double"
@@ -135,12 +130,11 @@ definitions:
         format: "double"
         example: 0.5
         description: "It determines how important the number of wrong answers are"
-      relatedPhaseId:
-        type: "integer"
-        format: "int64"
-        example: 1
-        description: "ID of phase (usually training phase) the decision matrix row\
-          \ is related to"
+      relatedPhaseInfo:
+        example: "1"
+        description: "Info about phase (usually training phase) the decision matrix\
+          \ row is related to"
+        $ref: "#/definitions/DecisionMatrixRowDTO"
       allowedCommands:
         type: "integer"
         format: "int64"
