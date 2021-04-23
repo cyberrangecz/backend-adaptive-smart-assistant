@@ -1,1 +1,1 @@
-1.0.23 Students performance evaluation fixed.
+1.0.24 Fixed evaluation of the used keywords and completed in time.
