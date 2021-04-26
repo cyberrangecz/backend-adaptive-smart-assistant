@@ -1,1 +1,1 @@
-1.0.24 Fixed evaluation of the used keywords and completed in time.
+1.0.25 Fixed computation of the participant's performance.
