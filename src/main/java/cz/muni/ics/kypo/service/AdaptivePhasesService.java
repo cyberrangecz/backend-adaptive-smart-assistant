@@ -70,17 +70,15 @@ public class AdaptivePhasesService {
             }
             OverallPhaseStatistics relatedPhaseStatistics = Optional.ofNullable(overAllPhaseStatistics.get(relatedPhaseInfo.getId()))
                     .orElseThrow(() -> new EntityNotFoundException(new EntityErrorDetail(OverallPhaseStatistics.class, "id", Long.class, relatedPhaseInfo.getId(), "Statistics for phase not found")));
-            if (decisionMatrixRow.getCompletedInTime() > ZERO) {
-                sumOfAllWeights += decisionMatrixRow.getCompletedInTime();
-                participantWeightedPerformance += evaluateCompletedInTime(decisionMatrixRow, relatedPhaseStatistics, relatedPhaseInfo.getEstimatedPhaseTime());
+            if (decisionMatrixRow.getCompletedInTime() > ZERO && decisionMatrixRow.getSolutionDisplayed() > ZERO) {
+                sumOfAllWeights += decisionMatrixRow.getCompletedInTime() * decisionMatrixRow.getSolutionDisplayed();
+                double completedInTimePerformance = evaluateCompletedInTime(decisionMatrixRow, relatedPhaseStatistics, relatedPhaseInfo.getEstimatedPhaseTime());
+                double solutionDisplayedPerformance = evaluateSolutionDisplayed(decisionMatrixRow, relatedPhaseStatistics);
+                participantWeightedPerformance += completedInTimePerformance * solutionDisplayedPerformance;
             }
             if (decisionMatrixRow.getKeywordUsed() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getKeywordUsed();
                 participantWeightedPerformance += evaluateKeywordUsed(decisionMatrixRow, relatedPhaseStatistics);
-            }
-            if (decisionMatrixRow.getSolutionDisplayed() > ZERO) {
-                sumOfAllWeights += decisionMatrixRow.getSolutionDisplayed();
-                participantWeightedPerformance += evaluateSolutionDisplayed(decisionMatrixRow, relatedPhaseStatistics);
             }
             if (decisionMatrixRow.getWrongAnswers() > ZERO) {
                 sumOfAllWeights += decisionMatrixRow.getWrongAnswers();
@@ -93,6 +91,8 @@ public class AdaptivePhasesService {
         }
         return participantWeightedPerformance / sumOfAllWeights;
     }
+
+
 
     private double evaluateCompletedInTime(DecisionMatrixRowDTO decisionMatrixRow,
                                            OverallPhaseStatistics phaseStatistics,
