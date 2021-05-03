@@ -58,10 +58,8 @@ public class AdaptivePhasesService {
         long currentPhaseId = smartAssistantInput.getDecisionMatrix().get(smartAssistantInput.getDecisionMatrix().size() - 1).getRelatedPhaseInfo().getId();
         for (DecisionMatrixRowDTO decisionMatrixRow : smartAssistantInput.getDecisionMatrix()) {
             RelatedPhaseInfoDTO relatedPhaseInfo = decisionMatrixRow.getRelatedPhaseInfo();
-            if (decisionMatrixRow.getQuestionnaireAnswered() > ZERO) {
-                sumOfAllWeights += decisionMatrixRow.getQuestionnaireAnswered();
-                participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(relatedPhaseInfo.isCorrectlyAnsweredRelatedQuestions());
-            }
+            sumOfAllWeights += decisionMatrixRow.getQuestionnaireAnswered();
+            participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(relatedPhaseInfo.isCorrectlyAnsweredRelatedQuestions());
             if(decisionMatrixRow.getRelatedPhaseInfo().getId() == currentPhaseId) {
                 break;
             }
@@ -70,20 +68,15 @@ public class AdaptivePhasesService {
             }
             OverallPhaseStatistics relatedPhaseStatistics = Optional.ofNullable(overAllPhaseStatistics.get(relatedPhaseInfo.getId()))
                     .orElseThrow(() -> new EntityNotFoundException(new EntityErrorDetail(OverallPhaseStatistics.class, "id", Long.class, relatedPhaseInfo.getId(), "Statistics for phase not found")));
-            if (decisionMatrixRow.getCompletedInTime() > ZERO && decisionMatrixRow.getSolutionDisplayed() > ZERO) {
-                sumOfAllWeights += decisionMatrixRow.getCompletedInTime() * decisionMatrixRow.getSolutionDisplayed();
-                double completedInTimePerformance = evaluateCompletedInTime(decisionMatrixRow, relatedPhaseStatistics, relatedPhaseInfo.getEstimatedPhaseTime());
-                double solutionDisplayedPerformance = evaluateSolutionDisplayed(decisionMatrixRow, relatedPhaseStatistics);
-                participantWeightedPerformance += completedInTimePerformance * solutionDisplayedPerformance;
-            }
-            if (decisionMatrixRow.getKeywordUsed() > ZERO) {
-                sumOfAllWeights += decisionMatrixRow.getKeywordUsed();
+            if (decisionMatrixRow.getSolutionDisplayed() > ZERO) {
+                participantWeightedPerformance += evaluateSolutionDisplayed(decisionMatrixRow, relatedPhaseStatistics);
                 participantWeightedPerformance += evaluateKeywordUsed(decisionMatrixRow, relatedPhaseStatistics);
-            }
-            if (decisionMatrixRow.getWrongAnswers() > ZERO) {
-                sumOfAllWeights += decisionMatrixRow.getWrongAnswers();
+                participantWeightedPerformance += evaluateCompletedInTime(decisionMatrixRow, relatedPhaseStatistics, relatedPhaseInfo.getEstimatedPhaseTime());
                 participantWeightedPerformance += evaluateWrongAnswers(decisionMatrixRow, relatedPhaseStatistics);
             }
+            sumOfAllWeights += decisionMatrixRow.getCompletedInTime() + decisionMatrixRow.getSolutionDisplayed() +
+                    decisionMatrixRow.getKeywordUsed() + decisionMatrixRow.getWrongAnswers();
+
         }
         if (sumOfAllWeights == 0) {
             LOG.error("No weights found for adaptive smart assistant input {}. The easiest task will be picked", smartAssistantInput);
@@ -91,8 +84,6 @@ public class AdaptivePhasesService {
         }
         return participantWeightedPerformance / sumOfAllWeights;
     }
-
-
 
     private double evaluateCompletedInTime(DecisionMatrixRowDTO decisionMatrixRow,
                                            OverallPhaseStatistics phaseStatistics,
