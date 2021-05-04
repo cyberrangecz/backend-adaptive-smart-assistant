@@ -68,7 +68,7 @@ public class AdaptivePhasesService {
             }
             OverallPhaseStatistics relatedPhaseStatistics = Optional.ofNullable(overAllPhaseStatistics.get(relatedPhaseInfo.getId()))
                     .orElseThrow(() -> new EntityNotFoundException(new EntityErrorDetail(OverallPhaseStatistics.class, "id", Long.class, relatedPhaseInfo.getId(), "Statistics for phase not found")));
-            if (decisionMatrixRow.getSolutionDisplayed() > ZERO) {
+            if (!relatedPhaseStatistics.getSolutionDisplayed()) {
                 participantWeightedPerformance += evaluateSolutionDisplayed(decisionMatrixRow, relatedPhaseStatistics);
                 participantWeightedPerformance += evaluateKeywordUsed(decisionMatrixRow, relatedPhaseStatistics);
                 participantWeightedPerformance += evaluateCompletedInTime(decisionMatrixRow, relatedPhaseStatistics, relatedPhaseInfo.getEstimatedPhaseTime());
