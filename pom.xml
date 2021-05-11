@@ -200,7 +200,7 @@
                                 </securityDefinition>
                             </securityDefinitions>
                             <swaggerDirectory>${swagger.directory}</swaggerDirectory>
-                            <swaggerFileName>kypo-adaptive-smart-assistant-open-api</swaggerFileName>
+                            <swaggerFileName>kypo-adaptive-smart-assistant-swagger-open-api</swaggerFileName>
                             <outputFormats>yaml</outputFormats>
                         </apiSource>
                     </apiSources>
