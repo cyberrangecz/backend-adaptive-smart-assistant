@@ -1,1 +1,1 @@
-1.0.27 Update security commons and documents versions.
+1.0.28 Remove unused dependencies.
