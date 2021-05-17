@@ -47,13 +47,6 @@
     </repositories>
 
     <dependencies>
-        <!--
-        <dependency>
-            <groupId>cz.muni.ics.kypo</groupId>
-            <artifactId>kypo2-security-commons</artifactId>
-            <version>1.0.38</version>
-        </dependency>
-        -->
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
         <dependency>
             <groupId>org.springframework.security</groupId>
