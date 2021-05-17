@@ -1,1 +1,1 @@
-1.0.26 Fixed computation of the participant's performance.
+1.0.27 Update security commons and documents versions.
