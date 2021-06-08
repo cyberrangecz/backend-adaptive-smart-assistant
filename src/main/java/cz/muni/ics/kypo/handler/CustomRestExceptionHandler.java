@@ -323,7 +323,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleMicroserviceApiException(final MicroserviceApiException ex, final WebRequest request,
                                                                  HttpServletRequest req) {
         final ApiError apiError = ApiMicroserviceError.of(
-                ex.getApiSubError().getStatus(),
+                ex.getStatusCode(),
                 ex.getMessage(),
                 getFullStackTrace(ex),
                 URL_PATH_HELPER.getRequestUri(req),
