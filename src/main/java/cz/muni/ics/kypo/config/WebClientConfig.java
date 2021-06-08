@@ -14,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -50,6 +51,9 @@ public class WebClientConfig {
                     exchangeFilterFunctions.add(addSecurityHeader());
                     exchangeFilterFunctions.add(javaMicroserviceExceptionHandlingFunction());
                 })
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024))
+                        .build())
                 .build();
     }
 
@@ -68,21 +72,24 @@ public class WebClientConfig {
             if(clientResponse.statusCode().is4xxClientError() || clientResponse.statusCode().is5xxServerError()) {
                 return clientResponse.bodyToMono(String.class)
                         .flatMap(errorBody -> {
-                            if (errorBody == null || errorBody.isBlank()) {
-                                throw new CustomWebClientException("Error from external microservice. No specific message provided.", clientResponse.statusCode());
-                            }
-                            JavaApiError javaApiError = null;
-                            try {
-                                javaApiError = objectMapper.readValue(errorBody, JavaApiError.class);
-                                javaApiError.setStatus(clientResponse.statusCode());
-                            } catch (IOException e) {
-                                throw new CustomWebClientException("Error from external microservice. No specific message provided.", clientResponse.statusCode());
-                            }
-                            throw new CustomWebClientException(javaApiError);
+                            JavaApiError javaApiError = obtainSuitableJavaApiError(errorBody);
+                            throw new CustomWebClientException(clientResponse.statusCode(), javaApiError);
                         });
             } else {
                 return Mono.just(clientResponse);
             }
         });
     }
+
+    private JavaApiError obtainSuitableJavaApiError(String errorBody) {
+        if (errorBody == null || errorBody.isBlank()) {
+            return JavaApiError.of("No specific message provided.");
+        }
+        try {
+            return objectMapper.readValue(errorBody, JavaApiError.class);
+        } catch (IOException e) {
+            return JavaApiError.of("Could not obtain error message. Error body is: " + errorBody);
+        }
+    }
+
 }
