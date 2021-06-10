@@ -1,1 +1,1 @@
-1.0.28 Remove unused dependencies.
+1.0.29 Refactoring of the MicroserviceApiException and CustomWebClientException.
