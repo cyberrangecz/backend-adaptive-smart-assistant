@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +58,7 @@ public class AdaptivePhasesService {
             RelatedPhaseInfoDTO relatedPhaseInfo = decisionMatrixRow.getRelatedPhaseInfo();
             sumOfAllWeights += decisionMatrixRow.getQuestionnaireAnswered();
             participantWeightedPerformance += decisionMatrixRow.getQuestionnaireAnswered() * convertBooleanToBinaryDouble(relatedPhaseInfo.isCorrectlyAnsweredRelatedQuestions());
-            if(decisionMatrixRow.getRelatedPhaseInfo().getId() == currentPhaseId) {
+            if (decisionMatrixRow.getRelatedPhaseInfo().getId() == currentPhaseId) {
                 break;
             }
             if (!elasticSearchDataAreNeeded(decisionMatrixRow)) {
