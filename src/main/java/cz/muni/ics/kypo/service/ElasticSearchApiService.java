@@ -32,7 +32,8 @@ public class ElasticSearchApiService {
                             .build(trainingRunId)
                     )
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<OverallPhaseStatistics>>() {})
+                    .bodyToMono(new ParameterizedTypeReference<List<OverallPhaseStatistics>>() {
+                    })
                     .block();
         } catch (CustomWebClientException ex) {
             throw new MicroserviceApiException("Could not retrieve wrong answers statistics from elastic for training run " + trainingRunId + ".", ex);

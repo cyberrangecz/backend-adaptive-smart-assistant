@@ -1,7 +1,7 @@
 package cz.muni.ics.kypo.rest;
 
-import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
+import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.service.AdaptivePhasesService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   version: "Version: 1.0.30"
   title: "KYPO Adaptive Smart Assistant - API Reference"
-host: "localhost:8080"
+host: "localhost:8086"
 basePath: "/kypo-adaptive-smart-assistant/api/v1"
 tags:
 - name: "Adaptive Phases"

@@ -4,22 +4,19 @@ import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
 import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.api.exceptions.error.ApiEntityError;
 import cz.muni.ics.kypo.handler.CustomRestExceptionHandler;
-import cz.muni.ics.kypo.rest.config.RestConfigTest;
 import cz.muni.ics.kypo.rest.util.ObjectConverter;
 import cz.muni.ics.kypo.rest.util.TestDataFactory;
+import cz.muni.ics.kypo.service.AdaptivePhasesService;
 import cz.muni.ics.kypo.service.ElasticSearchApiService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -35,9 +32,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {AdaptivePhasesRestController.class, TestDataFactory.class})
-@Import(RestConfigTest.class)
+@ContextConfiguration(classes = {
+        AdaptivePhasesRestController.class,
+        TestDataFactory.class,
+        AdaptivePhasesService.class
+})
 @WebMvcTest(AdaptivePhasesRestController.class)
 class AdaptivePhasesRestControllerTest {
 
@@ -57,7 +56,7 @@ class AdaptivePhasesRestControllerTest {
     }
 
     @Test
-    void findSuitableTask_firstTrainingPhaseInTrainingDefinition() throws Exception {
+    void findSuitableTaskFirstTrainingPhaseInTrainingDefinition() throws Exception {
         given(elasticSearchApiService.getOverAllPhaseStatistics(anyLong(), anyList())).willReturn(Collections.emptyList());
         MockHttpServletResponse response = mvc.perform(post("/adaptive-phases")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -69,7 +68,7 @@ class AdaptivePhasesRestControllerTest {
     }
 
     @Test
-    void findSuitableTask_secondTrainingPhaseInTrainingDefinition() throws Exception {
+    void findSuitableTaskSecondTrainingPhaseInTrainingDefinition() throws Exception {
         given(elasticSearchApiService.getOverAllPhaseStatistics(anyLong(), anyList())).willReturn(testDataFactory.getOverallPhaseStatisticsAllCorrect());
         MockHttpServletResponse response = mvc.perform(post("/adaptive-phases")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -81,7 +80,7 @@ class AdaptivePhasesRestControllerTest {
     }
 
     @Test
-    void findSuitableTask_worstPossiblePerformance() throws Exception {
+    void findSuitableTaskWorstPossiblePerformance() throws Exception {
         given(elasticSearchApiService.getOverAllPhaseStatistics(anyLong(), anyList())).willReturn(testDataFactory.getOverallPhaseStatisticsAllWrong());
         MockHttpServletResponse response = mvc.perform(post("/adaptive-phases")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -93,7 +92,7 @@ class AdaptivePhasesRestControllerTest {
     }
 
     @Test
-    void findSuitableTask_differentWeightsInMatrix() throws Exception {
+    void findSuitableTaskDifferentWeightsInMatrix() throws Exception {
         given(elasticSearchApiService.getOverAllPhaseStatistics(anyLong(), anyList())).willReturn(testDataFactory.getOverallPhaseStatisticsCombinedPerformance());
         MockHttpServletResponse response = mvc.perform(post("/adaptive-phases")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -105,7 +104,7 @@ class AdaptivePhasesRestControllerTest {
     }
 
     @Test
-    void findSuitableTask_zeroWeightsInDecisionMatrix() throws Exception {
+    void findSuitableTaskZeroWeightsInDecisionMatrix() throws Exception {
         given(elasticSearchApiService.getOverAllPhaseStatistics(anyLong(), anyList())).willReturn(Collections.emptyList());
         MockHttpServletResponse response = mvc.perform(post("/adaptive-phases")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -117,7 +116,7 @@ class AdaptivePhasesRestControllerTest {
     }
 
     @Test
-    void findSuitableTask_wrongPhaseIds() throws Exception {
+    void findSuitableTaskWrongPhaseIds() throws Exception {
         AdaptiveSmartAssistantInput adaptiveSmartAssistantInput = testDataFactory.getAdaptiveSmartAssistantInput2();
         adaptiveSmartAssistantInput.getDecisionMatrix().get(0).setCompletedInTime(1L);
         given(elasticSearchApiService.getOverAllPhaseStatistics(anyLong(), anyList())).willReturn(testDataFactory.getOverallPhaseStatisticsWrongPhaseId());
