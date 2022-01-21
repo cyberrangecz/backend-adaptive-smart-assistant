@@ -1,2 +1,3 @@
+1.0.31 Updated dependencies to the latest versions. Code cleanup. Configured multistage docker build to decrease the resulting image size.
 1.0.30 Update log4j2 version to avoid CVE-2021-44228 vulnerability
 1.0.29 Refactoring of the MicroserviceApiException and CustomWebClientException.
