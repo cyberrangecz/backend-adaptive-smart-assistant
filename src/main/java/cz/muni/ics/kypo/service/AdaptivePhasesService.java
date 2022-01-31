@@ -34,6 +34,8 @@ public class AdaptivePhasesService {
     }
 
     /**
+     * This method is equal to the third equation in the paper: https://www.muni.cz/en/research/publications/1783806
+     *
      * @param smartAssistantInput input for smart assistant, especially phase details
      * @return the suitable task in a phase x
      */
@@ -44,6 +46,7 @@ public class AdaptivePhasesService {
             suitableTaskResponseDto.setSuitableTask(smartAssistantInput.getPhaseXTasks());
             return suitableTaskResponseDto;
         } else {
+            // the (int) cast is equal to the trunc function in the third equation in the above-mentioned paper
             int suitableTask = ((int) (smartAssistantInput.getPhaseXTasks() * (1 - participantsPerformance))) + 1;
             suitableTaskResponseDto.setSuitableTask(suitableTask);
             return suitableTaskResponseDto;
