@@ -22,13 +22,15 @@ public class ElasticSearchApiService {
         this.elasticsearchServiceWebClient = elasticsearchServiceWebClient;
     }
 
-    public List<OverallPhaseStatistics> getOverAllPhaseStatistics(long trainingRunId, List<Long> phaseIds) {
+    public List<OverallPhaseStatistics> getOverAllPhaseStatistics(long trainingRunId, List<Long> phaseIds, String accessToken, Long userId) {
         try {
             return elasticsearchServiceWebClient
                     .post()
                     .uri(uriBuilder -> uriBuilder
                             .path("/training-statistics/training-runs/{runId}/phases/overall")
                             .queryParam("phaseIds", StringUtils.collectionToDelimitedString(phaseIds, ","))
+                            .queryParam("accessToken", accessToken)
+                            .queryParam("userId", userId)
                             .build(trainingRunId)
                     )
                     .retrieve()

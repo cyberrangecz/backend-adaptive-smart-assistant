@@ -7,10 +7,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -42,8 +39,9 @@ public class AdaptivePhasesRestController {
     })
     @PostMapping
     public ResponseEntity<SuitableTaskResponseDto> findSuitableTaskInPhase(
-            @ApiParam(value = "smartAssistantInput", required = true)
-            @RequestBody @Valid AdaptiveSmartAssistantInput smartAssistantInput) {
-        return ResponseEntity.ok(adaptivePhasesService.computeSuitableTask(smartAssistantInput));
+            @ApiParam(value = "smartAssistantInput", required = true) @RequestBody @Valid AdaptiveSmartAssistantInput smartAssistantInput,
+            @ApiParam(value = "Training instance access token") @RequestParam(name = "accessToken", required = false) String accessToken,
+            @ApiParam(value = "User ID") @RequestParam(name = "userId", required = false) Long userId) {
+        return ResponseEntity.ok(adaptivePhasesService.computeSuitableTask(smartAssistantInput, accessToken, userId));
     }
 }
