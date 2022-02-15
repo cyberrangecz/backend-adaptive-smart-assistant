@@ -27,9 +27,16 @@ public class AdaptivePhasesService {
         this.elasticSearchApiService = elasticSearchApiService;
     }
 
-    private double computeParticipantsPerformance(AdaptiveSmartAssistantInput smartAssistantInput) {
-        Map<Long, OverallPhaseStatistics> overAllPhaseStatistics = elasticSearchApiService.getOverAllPhaseStatistics(smartAssistantInput.getTrainingRunId(), smartAssistantInput.getPhaseIds())
+    private double computeParticipantsPerformance(AdaptiveSmartAssistantInput smartAssistantInput, String accessToken, Long userId) {
+        Map<Long, OverallPhaseStatistics> overAllPhaseStatistics = elasticSearchApiService.getOverAllPhaseStatistics(
+                smartAssistantInput.getTrainingRunId(),
+                smartAssistantInput.getPhaseIds(),
+                accessToken,
+                userId
+        )
                 .stream().collect(Collectors.toMap(OverallPhaseStatistics::getPhaseId, Function.identity()));
+        LOG.debug("For training run (ID: " + smartAssistantInput.getTrainingRunId() + ") of the user (ID: " + userId + ") " +
+                "the following statistics were used to compute theirs performance: \n " + overAllPhaseStatistics);
         return evaluateParticipantPerformance(smartAssistantInput, overAllPhaseStatistics);
     }
 
@@ -39,9 +46,9 @@ public class AdaptivePhasesService {
      * @param smartAssistantInput input for smart assistant, especially phase details
      * @return the suitable task in a phase x
      */
-    public SuitableTaskResponseDto computeSuitableTask(AdaptiveSmartAssistantInput smartAssistantInput) {
+    public SuitableTaskResponseDto computeSuitableTask(AdaptiveSmartAssistantInput smartAssistantInput, String accessToken, Long userId) {
         SuitableTaskResponseDto suitableTaskResponseDto = new SuitableTaskResponseDto();
-        double participantsPerformance = computeParticipantsPerformance(smartAssistantInput); // must be in interval <0,1>
+        double participantsPerformance = computeParticipantsPerformance(smartAssistantInput, accessToken, userId); // must be in interval <0,1>
         if (participantsPerformance == ZERO) {
             suitableTaskResponseDto.setSuitableTask(smartAssistantInput.getPhaseXTasks());
             return suitableTaskResponseDto;
