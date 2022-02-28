@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  version: "Version: 1.0.31"
+  version: "Version: 1.0.32"
   title: "KYPO Adaptive Smart Assistant - API Reference"
 host: "localhost:8086"
 basePath: "/kypo-adaptive-smart-assistant/api/v1"
@@ -26,6 +26,17 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/AdaptiveSmartAssistantInput"
+      - name: "accessToken"
+        in: "query"
+        description: "Training instance access token"
+        required: false
+        type: "string"
+      - name: "userId"
+        in: "query"
+        description: "User ID"
+        required: false
+        type: "integer"
+        format: "int64"
       responses:
         200:
           description: "Suitable task found."
