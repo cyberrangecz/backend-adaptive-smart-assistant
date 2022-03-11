@@ -15,7 +15,7 @@
     <description>KYPO Adaptive Smart Assistant</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <!-- spring for swagger version -->
         <swagger.version>3.0.0</swagger.version>
         <swagger.directory>${basedir}/doc-files</swagger.directory>
