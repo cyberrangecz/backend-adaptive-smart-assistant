@@ -1,5 +1,5 @@
 ############ RUNNABLE STAGE ############
-FROM maven:3.6.2-jdk-11-slim AS build
+FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 ARG PROJECT_ARTIFACT_ID=kypo-adaptive-smart-assistant
 # Default link to proprietary repository, e.g., Nexus repository
@@ -11,7 +11,7 @@ RUN mvn clean install -DskipTests -Dproprietary-repo-url=$PROPRIETARY_REPO_URL &
     cp /app/target/$PROJECT_ARTIFACT_ID-*.jar kypo-adaptive-smart-assistant.jar
 
 ############ RUNNABLE STAGE ############
-FROM openjdk:11-jre-slim AS final
+FROM eclipse-temurin:17-jre-focal AS final
 WORKDIR /app
 COPY /etc/kypo-adaptive-smart-assistant.properties /app/etc/kypo-adaptive-smart-assistant.properties
 COPY entrypoint.sh /app/entrypoint.sh
