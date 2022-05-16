@@ -1,12 +1,16 @@
 package cz.muni.ics.kypo.config;
 
 
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.BeanDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -33,8 +37,7 @@ public class ObjectMappersConfiguration {
      *
      * @return the object mapper
      */
-    @Bean
-    @Qualifier("webClientObjectMapper")
+    @Bean("webClientObjectMapper")
     public ObjectMapper webClientObjectMapper() {
         ObjectMapper objectMapper = initializeBasicObjectMapperConfig();
         objectMapper.registerModule(getSimpleValidationModule());

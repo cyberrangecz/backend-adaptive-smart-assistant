@@ -3,8 +3,8 @@ package cz.muni.ics.kypo.service;
 import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
 import cz.muni.ics.kypo.exceptions.CustomWebClientException;
 import cz.muni.ics.kypo.exceptions.MicroserviceApiException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -13,14 +13,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class ElasticSearchApiService {
 
     private final WebClient elasticsearchServiceWebClient;
-
-    @Autowired
-    public ElasticSearchApiService(@Qualifier("elasticsearchServiceWebClient") WebClient elasticsearchServiceWebClient) {
-        this.elasticsearchServiceWebClient = elasticsearchServiceWebClient;
-    }
 
     public List<OverallPhaseStatistics> getOverAllPhaseStatistics(long trainingRunId, List<Long> phaseIds, String accessToken, Long userId) {
         try {

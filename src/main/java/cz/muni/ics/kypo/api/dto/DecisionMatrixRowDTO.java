@@ -2,16 +2,16 @@ package cz.muni.ics.kypo.api.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.util.Objects;
+import lombok.Data;
 
 /**
  * This class is taken from project kypo-adaptive-training.
  */
 @ApiModel(value = "DecisionMatrixRowDTO")
+@Data
 public class DecisionMatrixRowDTO {
 
-    @ApiModelProperty(value = "ID of decision matrix row", required = true, position = 0, example = "1")
+    @ApiModelProperty(value = "ID of decision matrix row", required = true, example = "1")
     private long id;
     @ApiModelProperty(value = "Order of row in a decision matrix", required = true, example = "1")
     private int order;
@@ -31,120 +31,4 @@ public class DecisionMatrixRowDTO {
     private long allowedCommands;
     @ApiModelProperty(value = "Number of wrong answers that are allowed in a training phase", example = "10")
     private long allowedWrongAnswers;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
-    public double getQuestionnaireAnswered() {
-        return questionnaireAnswered;
-    }
-
-    public void setQuestionnaireAnswered(double questionnaireAnswered) {
-        this.questionnaireAnswered = questionnaireAnswered;
-    }
-
-    public double getKeywordUsed() {
-        return keywordUsed;
-    }
-
-    public void setKeywordUsed(double keywordUsed) {
-        this.keywordUsed = keywordUsed;
-    }
-
-    public double getCompletedInTime() {
-        return completedInTime;
-    }
-
-    public void setCompletedInTime(double completedInTime) {
-        this.completedInTime = completedInTime;
-    }
-
-    public double getSolutionDisplayed() {
-        return solutionDisplayed;
-    }
-
-    public void setSolutionDisplayed(double solutionDisplayed) {
-        this.solutionDisplayed = solutionDisplayed;
-    }
-
-    public double getWrongAnswers() {
-        return wrongAnswers;
-    }
-
-    public void setWrongAnswers(double wrongAnswers) {
-        this.wrongAnswers = wrongAnswers;
-    }
-
-    public RelatedPhaseInfoDTO getRelatedPhaseInfo() {
-        return relatedPhaseInfo;
-    }
-
-    public void setRelatedPhaseInfo(RelatedPhaseInfoDTO relatedPhaseInfo) {
-        this.relatedPhaseInfo = relatedPhaseInfo;
-    }
-
-    public long getAllowedCommands() {
-        return allowedCommands;
-    }
-
-    public void setAllowedCommands(long allowedCommands) {
-        this.allowedCommands = allowedCommands;
-    }
-
-    public long getAllowedWrongAnswers() {
-        return allowedWrongAnswers;
-    }
-
-    public void setAllowedWrongAnswers(long allowedWrongAnswers) {
-        this.allowedWrongAnswers = allowedWrongAnswers;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DecisionMatrixRowDTO)) return false;
-        DecisionMatrixRowDTO that = (DecisionMatrixRowDTO) o;
-        return id == that.id &&
-                order == that.order &&
-                Double.compare(that.questionnaireAnswered, questionnaireAnswered) == 0 &&
-                Double.compare(that.keywordUsed, keywordUsed) == 0 &&
-                Double.compare(that.completedInTime, completedInTime) == 0 &&
-                Double.compare(that.solutionDisplayed, solutionDisplayed) == 0 &&
-                Double.compare(that.wrongAnswers, wrongAnswers) == 0 &&
-                allowedCommands == that.allowedCommands &&
-                allowedWrongAnswers == that.allowedWrongAnswers;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, order, questionnaireAnswered, keywordUsed, completedInTime, solutionDisplayed, wrongAnswers, allowedCommands, allowedWrongAnswers);
-    }
-
-    @Override
-    public String toString() {
-        return "DecisionMatrixRow{" +
-                "id=" + id +
-                ", order=" + order +
-                ", questionnaireAnswered=" + questionnaireAnswered +
-                ", keywordUsed=" + keywordUsed +
-                ", completedInTime=" + completedInTime +
-                ", solutionDisplayed=" + solutionDisplayed +
-                ", wrongAnswers=" + wrongAnswers +
-                ", allowedCommands=" + allowedCommands +
-                ", allowedWrongAnswers=" + allowedWrongAnswers +
-                '}';
-    }
 }
