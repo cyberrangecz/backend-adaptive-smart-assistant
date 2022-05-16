@@ -1,11 +1,14 @@
 package cz.muni.ics.kypo.service;
 
-import cz.muni.ics.kypo.api.dto.*;
+import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
+import cz.muni.ics.kypo.api.dto.DecisionMatrixRowDTO;
+import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
+import cz.muni.ics.kypo.api.dto.RelatedPhaseInfoDTO;
+import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.api.exceptions.EntityErrorDetail;
 import cz.muni.ics.kypo.api.exceptions.EntityNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -15,17 +18,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class AdaptivePhasesService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AdaptivePhasesService.class);
 
     private static final double ZERO = 0.0;
     private final ElasticSearchApiService elasticSearchApiService;
-
-    @Autowired
-    public AdaptivePhasesService(ElasticSearchApiService elasticSearchApiService) {
-        this.elasticSearchApiService = elasticSearchApiService;
-    }
 
     private double computeParticipantsPerformance(AdaptiveSmartAssistantInput smartAssistantInput, String accessToken, Long userId) {
         Map<Long, OverallPhaseStatistics> overAllPhaseStatistics = elasticSearchApiService.getOverAllPhaseStatistics(
@@ -35,7 +33,7 @@ public class AdaptivePhasesService {
                 userId
         )
                 .stream().collect(Collectors.toMap(OverallPhaseStatistics::getPhaseId, Function.identity()));
-        LOG.debug("For training run (ID: " + smartAssistantInput.getTrainingRunId() + ") of the user (ID: " + userId + ") " +
+        log.debug("For training run (ID: " + smartAssistantInput.getTrainingRunId() + ") of the user (ID: " + userId + ") " +
                 "the following statistics were used to compute theirs performance: \n " + overAllPhaseStatistics);
         return evaluateParticipantPerformance(smartAssistantInput, overAllPhaseStatistics);
     }
@@ -87,7 +85,7 @@ public class AdaptivePhasesService {
 
         }
         if (sumOfAllWeights == 0) {
-            LOG.error("No weights found for adaptive smart assistant input {}. The easiest task will be picked", smartAssistantInput);
+            log.error("No weights found for adaptive smart assistant input {}. The easiest task will be picked", smartAssistantInput);
             return 0.0;
         }
         return participantWeightedPerformance / sumOfAllWeights;

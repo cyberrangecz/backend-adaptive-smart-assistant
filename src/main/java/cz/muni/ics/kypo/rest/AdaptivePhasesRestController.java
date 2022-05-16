@@ -3,11 +3,20 @@ package cz.muni.ics.kypo.rest;
 import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
 import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.service.AdaptivePhasesService;
-import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -17,21 +26,16 @@ import javax.validation.Valid;
         tags = "Adaptive Phases",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         authorizations = @Authorization(value = "bearerAuth"))
+@RequiredArgsConstructor
 public class AdaptivePhasesRestController {
 
     private final AdaptivePhasesService adaptivePhasesService;
-
-    @Autowired
-    public AdaptivePhasesRestController(AdaptivePhasesService adaptivePhasesService) {
-        this.adaptivePhasesService = adaptivePhasesService;
-    }
 
     @ApiOperation(httpMethod = "POST",
             value = "Find a suitable task",
             notes = "Find a suitable task for a participant trying to get the next phase",
             response = SuitableTaskResponseDto.class,
-            nickname = "findSuitableTaskInPhase",
-            produces = MediaType.APPLICATION_JSON_VALUE
+            nickname = "findSuitableTaskInPhase"
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Suitable task found."),
