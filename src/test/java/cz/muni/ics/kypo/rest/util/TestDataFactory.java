@@ -1,6 +1,10 @@
 package cz.muni.ics.kypo.rest.util;
 
-import cz.muni.ics.kypo.api.dto.*;
+import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
+import cz.muni.ics.kypo.api.dto.DecisionMatrixRowDTO;
+import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
+import cz.muni.ics.kypo.api.dto.RelatedPhaseInfoDTO;
+import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -37,8 +37,7 @@ public class WebClientConfig {
      *
      * @return the web client
      */
-    @Bean
-    @Qualifier("elasticsearchServiceWebClient")
+    @Bean(name = "elasticsearchServiceWebClient")
     public WebClient elasticsearchServiceWebClient() {
         return WebClient.builder()
                 .baseUrl(elasticsearchServiceURI)

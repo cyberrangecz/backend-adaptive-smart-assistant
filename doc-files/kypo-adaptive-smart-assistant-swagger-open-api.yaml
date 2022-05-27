@@ -50,35 +50,35 @@ definitions:
   AdaptiveSmartAssistantInput:
     type: "object"
     required:
-    - "phaseX"
-    - "phaseXTasks"
-    - "trainingRunId"
+    - "phase_x"
+    - "phase_xtasks"
+    - "training_run_id"
     properties:
-      trainingRunId:
+      training_run_id:
         type: "integer"
         format: "int64"
         example: 1
         description: "The identifier of a given training run representing a given\
           \ participant"
-      phaseX:
+      phase_x:
         type: "integer"
         format: "int64"
         example: 5
         description: "The id of a phase X."
-      phaseXTasks:
+      phase_xtasks:
         type: "integer"
         format: "int32"
         example: 3
         description: "The number of tasks in a phase X."
         minimum: 1
-      phaseIds:
+      phase_ids:
         type: "array"
         example: "[1,2,3,4,5]"
         description: "The list of phaseIds (the given phase including the given phases)."
         items:
           type: "integer"
           format: "int64"
-      decisionMatrix:
+      decision_matrix:
         type: "array"
         description: "The decision matrix with weights to compute the students' performance."
         items:
@@ -86,14 +86,14 @@ definitions:
   DecisionMatrixRowDTO:
     type: "object"
     required:
-    - "completedInTime"
+    - "completed_in_time"
     - "id"
-    - "keywordUsed"
+    - "keyword_used"
     - "order"
-    - "questionnaireAnswered"
-    - "relatedPhaseInfo"
-    - "solutionDisplayed"
-    - "wrongAnswers"
+    - "questionnaire_answered"
+    - "related_phase_info"
+    - "solution_displayed"
+    - "wrong_answers"
     properties:
       id:
         type: "integer"
@@ -105,46 +105,46 @@ definitions:
         format: "int32"
         example: 1
         description: "Order of row in a decision matrix"
-      questionnaireAnswered:
+      questionnaire_answered:
         type: "number"
         format: "double"
         example: 0.5
         description: "It determines how important the answers of the questions in\
           \ questionnaires are"
-      keywordUsed:
+      keyword_used:
         type: "number"
         format: "double"
         example: 0.5
         description: "It determines how important it is whether the player used the\
           \ keyword"
-      completedInTime:
+      completed_in_time:
         type: "number"
         format: "double"
         example: 0.5
         description: "It determines how important it is whether the player completed\
           \ the task in time"
-      solutionDisplayed:
+      solution_displayed:
         type: "number"
         format: "double"
         example: 0.5
         description: "It determines how important it is whether the player displayed\
           \ the solution of the task they were solving"
-      wrongAnswers:
+      wrong_answers:
         type: "number"
         format: "double"
         example: 0.5
         description: "It determines how important the number of wrong answers are"
-      relatedPhaseInfo:
+      related_phase_info:
         example: "1"
         description: "Info about phase (usually training phase) the decision matrix\
           \ row is related to"
         $ref: "#/definitions/DecisionMatrixRowDTO"
-      allowedCommands:
+      allowed_commands:
         type: "integer"
         format: "int64"
         example: 10
         description: "Number of commands that are allowed to use in a training phase"
-      allowedWrongAnswers:
+      allowed_wrong_answers:
         type: "integer"
         format: "int64"
         example: 10
@@ -152,7 +152,7 @@ definitions:
   SuitableTaskResponseDto:
     type: "object"
     properties:
-      suitableTask:
+      suitable_task:
         type: "integer"
         format: "int32"
         example: 1
