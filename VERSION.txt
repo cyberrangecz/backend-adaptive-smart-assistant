@@ -1,3 +1,4 @@
+2.0.1 Modify configuration of the swagger docs generation, refactoring of the project.
 2.0.0 Migrate the project to Java 17.
 1.0.32 Allow to request data from Elasticsearch service by an access token and user ID - support local sandboxes.
 1.0.31 Updated dependencies to the latest versions. Code cleanup. Configured multistage docker build to decrease the resulting image size.
