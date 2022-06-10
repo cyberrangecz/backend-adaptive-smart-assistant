@@ -61,6 +61,8 @@ public class AdaptivePhasesService {
                 .stream().collect(Collectors.toMap(OverallPhaseStatistics::getPhaseId, Function.identity()));
         log.debug("For training run (ID: " + smartAssistantInput.getTrainingRunId() + ") of the user (ID: " + userId + ") " +
                 "the following statistics were used to compute theirs performance: \n " + overAllPhaseStatistics);
+        log.error(overAllPhaseStatistics.toString());
+        log.error(smartAssistantInput.toString());
         return evaluateParticipantPerformance(smartAssistantInput, overAllPhaseStatistics);
     }
 
