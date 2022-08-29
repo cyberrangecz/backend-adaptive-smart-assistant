@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  version: "Version: 2.0.1"
+  version: "Version: 2.1.0"
   title: "KYPO Adaptive Smart Assistant - API Reference"
 host: "localhost:8086"
 basePath: "/kypo-adaptive-smart-assistant/api/v1"
@@ -37,6 +37,31 @@ paths:
         required: false
         type: "integer"
         format: "int64"
+      responses:
+        200:
+          description: "Suitable task found."
+          schema:
+            $ref: "#/definitions/SuitableTaskResponseDto"
+        500:
+          description: "Unexpected application error"
+      security:
+      - bearerAuth: []
+  /adaptive-phases/instances:
+    post:
+      tags:
+      - "Adaptive Phases"
+      summary: "Find a suitable task"
+      description: "Find a suitable tasks for participants based on their performance"
+      operationId: "findSuitableTaskInPhase"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "smartAssistantInput"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/OverallInstancePerformance"
       responses:
         200:
           description: "Suitable task found."
@@ -149,6 +174,82 @@ definitions:
         format: "int64"
         example: 10
         description: "Number of wrong answers that are allowed in a training phase"
+  OverallInstancePerformance:
+    type: "object"
+    properties:
+      trainee_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+        description: "The identifier of a given training run representing a given\
+          \ participant"
+      smart_assistant_input:
+        type: "array"
+        description: "List of input values for adaptive smart assistant for each phase\
+          \ together with decision matrix"
+        items:
+          $ref: "#/definitions/AdaptiveSmartAssistantInput"
+      phases_smart_assistant_input:
+        type: "object"
+        description: "Performance statistics for each phase"
+        additionalProperties:
+          $ref: "#/definitions/OverallPhaseStatistics"
+  OverallPhaseStatistics:
+    type: "object"
+    properties:
+      phase_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+        description: "ID of a phase"
+      task_id:
+        type: "integer"
+        format: "int64"
+        example: 3
+        description: "ID of a task"
+      sandbox_id:
+        type: "integer"
+        format: "int64"
+        example: 1
+        description: "ID of a sandbox"
+      phase_order:
+        type: "integer"
+        format: "int64"
+        example: 0
+        description: "Order of a phase"
+      phase_time:
+        type: "integer"
+        format: "int64"
+        example: 1614803536837
+        description: "ID of a task"
+      wrong_answers:
+        type: "array"
+        example: "[\"nmap 123\", \"nmap 123\"]"
+        description: "The list of answers (flags) that participant submitted"
+        items:
+          type: "string"
+      solution_displayed:
+        type: "boolean"
+        example: true
+        description: "The information if the solution was displayed"
+      number_of_commands:
+        type: "integer"
+        format: "int64"
+        example: 5
+        description: "The number of submitted commands"
+      keywords_in_commands:
+        type: "object"
+        description: "The map containing the mapping if the commands contains the\
+          \ right keywords"
+        additionalProperties:
+          type: "integer"
+          format: "int64"
+      questions_answer:
+        type: "array"
+        example: "[true,false,true,true]"
+        description: "List of trainees answers"
+        items:
+          type: "boolean"
   SuitableTaskResponseDto:
     type: "object"
     properties:
