@@ -54,7 +54,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.BAD_REQUEST,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 request.getContextPath());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -65,7 +65,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.BAD_REQUEST,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 request.getContextPath());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -76,7 +76,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.BAD_REQUEST,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 request.getContextPath());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -87,7 +87,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.NOT_FOUND,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 request.getContextPath());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -135,7 +135,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                         .stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
                         .collect(java.util.stream.Collectors.joining(", ")),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 request.getContextPath());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -146,7 +146,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.BAD_REQUEST,
                 ex.getMostSpecificCause().getMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 request.getContextPath());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -167,7 +167,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.BAD_REQUEST,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -185,7 +185,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 BadRequestException.class.getAnnotation(ResponseStatus.class).value(),
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -203,7 +203,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 ForbiddenException.class.getAnnotation(ResponseStatus.class).value(),
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -221,7 +221,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 InternalServerErrorException.class.getAnnotation(ResponseStatus.class).value(),
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -239,7 +239,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiEntityError apiError = ApiEntityError.of(
                 EntityNotFoundException.class.getAnnotation(ResponseStatus.class).value(),
                 EntityNotFoundException.class.getAnnotation(ResponseStatus.class).reason(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req),
                 ex.getEntityErrorDetail());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
@@ -258,7 +258,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.FORBIDDEN,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -277,7 +277,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.NOT_ACCEPTABLE,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -295,7 +295,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.BAD_REQUEST,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -314,7 +314,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiMicroserviceError.of(
                 ex.getStatusCode(),
                 ex.getMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req),
                 ex.getApiSubError());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
@@ -333,7 +333,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ApiError apiError = ApiError.of(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 getInitialException(ex).getLocalizedMessage(),
-                getFullStackTrace(ex),
+                getErrorMessage(ex),
                 URL_PATH_HELPER.getRequestUri(req));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
@@ -354,6 +354,18 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             return fullStackTrace;
         } catch (IOException e) {
             LOG.error("It was not possible to get the stack trace for that exception: ", e);
+        }
+        return "It was not possible to get the stack trace for that exception.";
+    }
+
+    private String getErrorMessage(Exception exception) {
+        try (StringWriter sw = new StringWriter();
+             PrintWriter pw = new PrintWriter(sw)) {
+            exception.printStackTrace(pw);
+            LOG.error(sw.toString());
+            return exception.getMessage();
+        } catch (IOException ex) {
+            LOG.error("It was not possible to get the stack trace for that exception: ", ex);
         }
         return "It was not possible to get the stack trace for that exception.";
     }

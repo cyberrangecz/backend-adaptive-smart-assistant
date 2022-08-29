@@ -28,6 +28,8 @@
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <!-- added to avoid log4j2 vulnerability CVE-2021-44228 -->
         <log4j2.version>2.15.0</log4j2.version>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
     <repositories>
