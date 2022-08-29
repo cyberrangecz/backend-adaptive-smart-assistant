@@ -1,16 +1,14 @@
 package cz.muni.ics.kypo.service;
 
-import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
-import cz.muni.ics.kypo.api.dto.DecisionMatrixRowDTO;
-import cz.muni.ics.kypo.api.dto.OverallPhaseStatistics;
-import cz.muni.ics.kypo.api.dto.RelatedPhaseInfoDTO;
-import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
+import cz.muni.ics.kypo.api.dto.*;
 import cz.muni.ics.kypo.api.exceptions.EntityErrorDetail;
 import cz.muni.ics.kypo.api.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -25,37 +23,64 @@ public class AdaptivePhasesService {
     private static final double ZERO = 0.0;
     private final ElasticSearchApiService elasticSearchApiService;
 
+    /**
+     * Computes suitable tasks for given participants based on their performance.
+     * @param overallInstancePerformances Overall performances of all participants.
+     * @return the suitable tasks in a phases for all trainees
+     */
+    public List<List<SuitableTaskResponseDto>> computeSuitableTask(List<OverallInstancePerformance> overallInstancePerformances) {
+        List<List<SuitableTaskResponseDto>> suitableTasksForTrainees = new ArrayList<>();
+        overallInstancePerformances.forEach(trainee -> {
+            List<SuitableTaskResponseDto> suitableTasksResponse = new ArrayList<>();
+            trainee.getSmartAssistantInput().forEach(smartAssistantInput -> {
+                double participantsPerformance = computeParticipantsPerformance(smartAssistantInput, trainee.getPhasesSmartAssistantInput());
+                suitableTasksResponse.add(findSuitableTask(participantsPerformance, smartAssistantInput));
+            });
+            suitableTasksForTrainees.add(suitableTasksResponse);
+        });
+        return suitableTasksForTrainees;
+    }
+
+    /**
+     *
+     * @param smartAssistantInput input for smart assistant, especially phase details
+     * @return the suitable task in a phase x
+     */
+    public SuitableTaskResponseDto computeSuitableTask(AdaptiveSmartAssistantInput smartAssistantInput, String accessToken, Long userId) {
+        double participantsPerformance = computeParticipantsPerformance(smartAssistantInput, accessToken, userId); // must be in interval <0,1>
+        return findSuitableTask(participantsPerformance, smartAssistantInput);
+    }
+
     private double computeParticipantsPerformance(AdaptiveSmartAssistantInput smartAssistantInput, String accessToken, Long userId) {
         Map<Long, OverallPhaseStatistics> overAllPhaseStatistics = elasticSearchApiService.getOverAllPhaseStatistics(
-                smartAssistantInput.getTrainingRunId(),
-                smartAssistantInput.getPhaseIds(),
-                accessToken,
-                userId
-        )
+                        smartAssistantInput.getTrainingRunId(),
+                        smartAssistantInput.getPhaseIds(),
+                        accessToken,
+                        userId
+                )
                 .stream().collect(Collectors.toMap(OverallPhaseStatistics::getPhaseId, Function.identity()));
         log.debug("For training run (ID: " + smartAssistantInput.getTrainingRunId() + ") of the user (ID: " + userId + ") " +
                 "the following statistics were used to compute theirs performance: \n " + overAllPhaseStatistics);
         return evaluateParticipantPerformance(smartAssistantInput, overAllPhaseStatistics);
     }
 
+    private double computeParticipantsPerformance(AdaptiveSmartAssistantInput smartAssistantInput, Map<Long,OverallPhaseStatistics> overallPhaseStatistics) {
+        return evaluateParticipantPerformance(smartAssistantInput, overallPhaseStatistics);
+    }
+
     /**
      * This method is equal to the third equation in the paper: https://www.muni.cz/en/research/publications/1783806
-     *
-     * @param smartAssistantInput input for smart assistant, especially phase details
-     * @return the suitable task in a phase x
      */
-    public SuitableTaskResponseDto computeSuitableTask(AdaptiveSmartAssistantInput smartAssistantInput, String accessToken, Long userId) {
+    private SuitableTaskResponseDto findSuitableTask(double participantsPerformance, AdaptiveSmartAssistantInput smartAssistantInput) {
         SuitableTaskResponseDto suitableTaskResponseDto = new SuitableTaskResponseDto();
-        double participantsPerformance = computeParticipantsPerformance(smartAssistantInput, accessToken, userId); // must be in interval <0,1>
         if (participantsPerformance == ZERO) {
             suitableTaskResponseDto.setSuitableTask(smartAssistantInput.getPhaseXTasks());
-            return suitableTaskResponseDto;
         } else {
             // the (int) cast is equal to the trunc function in the third equation in the above-mentioned paper
             int suitableTask = ((int) (smartAssistantInput.getPhaseXTasks() * (1 - participantsPerformance))) + 1;
             suitableTaskResponseDto.setSuitableTask(suitableTask);
-            return suitableTaskResponseDto;
         }
+        return suitableTaskResponseDto;
     }
 
     private double evaluateParticipantPerformance(AdaptiveSmartAssistantInput smartAssistantInput, Map<Long, OverallPhaseStatistics> overAllPhaseStatistics) {

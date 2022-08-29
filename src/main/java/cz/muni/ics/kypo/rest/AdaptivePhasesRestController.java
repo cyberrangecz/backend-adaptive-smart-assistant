@@ -1,6 +1,7 @@
 package cz.muni.ics.kypo.rest;
 
 import cz.muni.ics.kypo.api.dto.AdaptiveSmartAssistantInput;
+import cz.muni.ics.kypo.api.dto.OverallInstancePerformance;
 import cz.muni.ics.kypo.api.dto.SuitableTaskResponseDto;
 import cz.muni.ics.kypo.service.AdaptivePhasesService;
 import io.swagger.annotations.Api;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/adaptive-phases")
@@ -47,5 +49,22 @@ public class AdaptivePhasesRestController {
             @ApiParam(value = "Training instance access token") @RequestParam(name = "accessToken", required = false) String accessToken,
             @ApiParam(value = "User ID") @RequestParam(name = "userId", required = false) Long userId) {
         return ResponseEntity.ok(adaptivePhasesService.computeSuitableTask(smartAssistantInput, accessToken, userId));
+    }
+
+    @ApiOperation(httpMethod = "POST",
+            value = "Find a suitable task",
+            notes = "Find a suitable tasks for participants based on their performance",
+            response = SuitableTaskResponseDto.class,
+            nickname = "findSuitableTaskInPhase",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Suitable task found."),
+            @ApiResponse(code = 500, message = "Unexpected application error")
+    })
+    @PostMapping(path = "/instances")
+    public ResponseEntity<List<List<SuitableTaskResponseDto>>> findSuitableTasksInPhase(
+            @ApiParam(value = "smartAssistantInput", required = true) @RequestBody @Valid List<OverallInstancePerformance> overallInstancePerformances) {
+        return ResponseEntity.ok(adaptivePhasesService.computeSuitableTask(overallInstancePerformances));
     }
 }

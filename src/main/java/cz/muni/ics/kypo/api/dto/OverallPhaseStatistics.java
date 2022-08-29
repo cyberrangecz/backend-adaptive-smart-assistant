@@ -1,15 +1,13 @@
 package cz.muni.ics.kypo.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is taken from project kypo-elasticsearch-service.
@@ -18,11 +16,14 @@ import java.util.Map;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Data
 public class OverallPhaseStatistics {
-
     @ApiModelProperty(value = "ID of a phase", example = "1")
     private Long phaseId;
     @ApiModelProperty(value = "ID of a task", example = "3")
     private Long taskId;
+    @ApiModelProperty(value = "ID of a sandbox", example = "1")
+    private Long sandboxId;
+    @ApiModelProperty(value = "Order of a phase", example = "0")
+    private Long phaseOrder;
     @ApiModelProperty(value = "ID of a task", example = "1614803536837")
     private Long phaseTime;
     @ApiModelProperty(value = "The list of answers (flags) that participant submitted", example = "[\"nmap 123\", \"nmap 123\"]")
@@ -33,4 +34,6 @@ public class OverallPhaseStatistics {
     private Long numberOfCommands;
     @ApiModelProperty(value = "The map containing the mapping if the commands contains the right keywords")
     private Map<String, Long> keywordsInCommands = new HashMap<>();
+    @ApiModelProperty(value = "List of trainees answers", example = "[true,false,true,true]")
+    private List<Boolean> questionsAnswer = new ArrayList<>();
 }
