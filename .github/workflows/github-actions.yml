@@ -116,7 +116,7 @@ jobs:
   docker_image_push:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: ${{ github.ref_name == 'master' && github.event.repository.name || github.event.repository.name + '-devel' }}
+      IMAGE_NAME: ${{ github.ref_name == 'master' && github.event.repository.name || format('{0}-devel', github.event.repository.name) }}
     steps:
       - uses: actions/checkout@v4
 
