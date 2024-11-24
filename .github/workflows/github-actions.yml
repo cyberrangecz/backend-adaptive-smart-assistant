@@ -18,8 +18,8 @@ jobs:
   # This will create docker image as well
   java_template:
     uses: cyberrangecz/actions-templates/.github/workflows/java_template.yml@master
-    with:
-      MAVEN_CLI_OPTS: $MAVEN_CLI_OPTS
+    # with:
+    #   MAVEN_CLI_OPTS: $MAVEN_CLI_OPTS
 
   create_tag:
     uses: cyberrangecz/actions-templates/.github/workflows/tag_template.yml@master
