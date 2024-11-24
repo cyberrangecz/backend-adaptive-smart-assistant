@@ -1,145 +1,27 @@
-name: be-java-adaptive-smart-assistant - CI 
+name: Adaptive training CI
 
 on:
   push:
     branches:
       - master
       - develop
-      - cicd-test # Maybe remove later
+      - cicd-test
   pull_request:
     branches:
       - master
   workflow_dispatch:
 
-env:
-  MAVEN_CLI_OPTS: "-Dmaven.repo.local=${{ github.workspace }}/.m2/repository"
-  VERSION: v2.3.2
+# env:
+#   MAVEN_CLI_OPTS: "-Dmaven.repo.local=${{ github.workspace }}/.m2/repository"
 
 jobs:
-  pass_version:
-    if: github.event.pull_request.base.ref == 'master' || github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    outputs:
-      VERSION: ${{ steps.set_version.outputs.VERSION }}
-    steps:
-      - id: set_version
-        run: |
-          echo "VERSION=${{ env.VERSION }}" >> $GITHUB_OUTPUT
-          echo "::notice::VERSION=${{ env.VERSION }}"
-
-  build_maven:
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: 'maven'
-
-      - name: Build with Maven
-        run: |
-          mvn clean install $MAVEN_CLI_OPTS -Dproprietary-repo-url=${{ vars.PROPRIETARY_REPO_URL }}
-        env:
-          PROPRIETARY_REPO_URL: ${{ vars.PROPRIETARY_REPO_URL }}
-  
-  create_tag:
-    needs: pass_version
-    uses: cyberrangecz/actions-templates/.github/workflows/tag_template.yml@master
-    #uses: ./.github/workflows/tag_template.yml
+  # This will create docker image as well
+  java_template:
+    uses: cyberrangecz/actions-templates/.github/workflows/java_template.yml@master
     with:
-      VERSION: ${{ needs.pass_version.outputs.VERSION }}
+      MAVEN_CLI_OPTS: $MAVEN_CLI_OPTS
 
-  build_container:
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    needs: build_maven
-    #strategy:
-    #  matrix:
-    #    version: [latest,  env.VERSION ]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image
-        env:
-          CI_CUSTOM_IMAGE_NAME: ${{ github.ref == 'refs/heads/master' && 'kypo-adaptive-smart-assistant' || 'kypo-adaptive-smart-assistant-develop' }}
-        uses: docker/build-push-action@v6
-        with:
-          context: .  # Path to the Dockerfile
-          file: ./Dockerfile
-          build-args: |
-            PROPRIETARY_REPO_URL=${{ vars.PROPRIETARY_REPO_URL }}
-          push: true
-          tags: ghcr.io/${{ github.repository }}/${{ env.CI_CUSTOM_IMAGE_NAME }}:${{ env.VERSION }}
-
-  generate_docs:
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    needs: build_maven
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          cache: 'maven'
-
-      - name: Generate and Push Swagger Docs
-        run: |
-          mvn clean package $MAVEN_CLI_OPTS -DskipTests -Dswagger.skip=false -Dproprietary-repo-url=${{ vars.PROPRIETARY_REPO_URL }}
-
-      - name: Upload Docs Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ github.event.repository.name }}-docs
-          path: doc-files/kypo-adaptive-smart-assistant-swagger-open-api.yaml
-
-  # This pushes the image to GitHub Packages.
-  docker_image_push:
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ github.ref_name == 'master' && github.event.repository.name || format('{0}-devel', github.event.repository.name) }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
-
-      # I guess the credentials here are provided by GitHub itself, as I did not set them up
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Push image
-        run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
-
-          # This changes all uppercase characters to lowercase.
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # This strips the git ref prefix from the version.
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # This strips the "v" prefix from the tag name.
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # This uses the Docker `latest` tag convention.
-          [ "$VERSION" == "main" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+  create_tag:
+    uses: cyberrangecz/actions-templates/.github/workflows/tag_template.yml@master
+    with:
+      VERSION: ${{ vars.VERSION }}
