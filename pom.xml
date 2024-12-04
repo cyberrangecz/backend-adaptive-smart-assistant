@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>cyberrangecz</groupId>
+        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>cz.muni.ics.kypo</groupId>
+    <groupId>cyberrangecz</groupId>
     <artifactId>adaptive-smart-assistant</artifactId>
     <version>2.1.0</version>
     <name>adaptive-smart-assistant</name>
