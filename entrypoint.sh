@@ -37,4 +37,4 @@ do
     wait_for_it ${i}
 done
 
-exec java -Dspring.config.location=/app/etc/kypo-adaptive-smart-assistant.properties -jar /app/kypo-adaptive-smart-assistant.jar
+exec java -Dspring.config.location=/app/etc/$PROJECT_ARTIFACT_ID.properties -jar /app/$PROJECT_ARTIFACT_ID.jar

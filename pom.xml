@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
+        <groupId>cyberrangecz</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cz.muni.ics.kypo</groupId>
-    <artifactId>kypo-adaptive-smart-assistant</artifactId>
+    <artifactId>adaptive-smart-assistant</artifactId>
     <version>2.1.0</version>
-    <name>kypo-adaptive-smart-assistant</name>
-    <description>KYPO Adaptive Smart Assistant</description>
+    <name>adaptive-smart-assistant</name>
+    <description>Adaptive Smart Assistant</description>
 
     <properties>
         <java.version>17</java.version>
@@ -148,13 +148,13 @@
                             </locations>
                             <schemes>http,https</schemes>
                             <host>${swagger.host}</host>
-                            <basePath>/kypo-adaptive-smart-assistant/api/v1</basePath>
+                            <basePath>/adaptive-smart-assistant/api/v1</basePath>
                             <info>
-                                <title>KYPO Adaptive Smart Assistant - API Reference</title>
+                                <title>Adaptive Smart Assistant - API Reference</title>
                                 <version>Version: ${project.version}</version>
                             </info>
                             <swaggerDirectory>${swagger.directory}</swaggerDirectory>
-                            <swaggerFileName>kypo-adaptive-smart-assistant-swagger-open-api</swaggerFileName>
+                            <swaggerFileName>adaptive-smart-assistant-swagger-open-api</swaggerFileName>
                             <outputFormats>yaml</outputFormats>
                             <swaggerApiReader>cz.muni.ics.kypo.utils.SnakeCaseSwaggerReader</swaggerApiReader>
                         </apiSource>
