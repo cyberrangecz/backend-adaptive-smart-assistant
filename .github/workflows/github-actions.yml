@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - develop
-      - cicd-test
   pull_request:
     branches:
       - master
@@ -19,6 +18,7 @@ jobs:
       READ_PACKAGES: ${{ secrets.READ_PACKAGES }}
     with:
       MAVEN_CLI_OPTS: "-s etc/ci_settings.xml"
+      IMAGE_NAME: "adaptive-smart-assistant"
 
   create_tag:
     uses: cyberrangecz/actions-templates/.github/workflows/tag_template.yml@master
