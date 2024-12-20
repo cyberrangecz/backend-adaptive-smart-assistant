@@ -13,6 +13,7 @@
     <version>2.1.0</version>
     <name>adaptive-smart-assistant</name>
     <description>Adaptive Smart Assistant</description>
+
     <properties>
         <java.version>17</java.version>
         <!-- spring for swagger version -->
