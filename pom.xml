@@ -8,6 +8,13 @@
     <name>CyberRangeCZ Platform Adaptive Smart Assistant</name>
     <description>Backend service for finding appropriate training difficulty level</description>
     <version>1.0.0</version>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://github.com/cyberrangecz/backend-adaptive-smart-assistant/blob/master/LICENSE</url>
+        </license>
+    </licenses>
     
     <parent>
         <groupId>org.springframework.boot</groupId>
