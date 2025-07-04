@@ -7,7 +7,7 @@
     <artifactId>adaptive-smart-assistant</artifactId>
     <name>CyberRangeCZ Platform Adaptive Smart Assistant</name>
     <description>Backend service for finding appropriate training difficulty level</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <licenses>
         <license>
@@ -163,7 +163,7 @@
                                 <version>Version: ${project.version}</version>
                             </info>
                             <swaggerDirectory>${swagger.directory}</swaggerDirectory>
-                            <swaggerFileName>swagger-docs</swaggerFileName>
+                            <swaggerFileName>${project.artifactId}-swagger-docs</swaggerFileName>
                             <outputFormats>yaml</outputFormats>
                             <swaggerApiReader>cz.cyberrange.platform.utils.SnakeCaseSwaggerReader</swaggerApiReader>
                         </apiSource>
