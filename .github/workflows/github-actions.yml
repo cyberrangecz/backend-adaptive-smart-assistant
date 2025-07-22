@@ -21,6 +21,6 @@ jobs:
     secrets:
       READ_PACKAGES: ${{ secrets.READ_PACKAGES }}
     with:
-      MAVEN_CLI_OPTS: "-s etc/ci_settings.xml"
+      MAVEN_CLI_OPTS: ""
       IMAGE_NAME: "adaptive-smart-assistant"
       VERSION_PATH: "pom.xml"
