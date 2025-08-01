@@ -3,11 +3,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>cz.cyberrange.platform</groupId>
+    <groupId>cz.cybersecurityhub.maven</groupId>
     <artifactId>adaptive-smart-assistant</artifactId>
     <name>CyberRangeCZ Platform Adaptive Smart Assistant</name>
     <description>Backend service for finding appropriate training difficulty level</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
+
+    <url>https://github.com/cyberrangecz/backend-adaptive-smart-assistant</url>
+    <scm>
+        <url>https://github.com/cyberrangecz/backend-adaptive-smart-assistant</url>
+        <connection>scm:git:https://github.com/cyberrangecz/backend-adaptive-smart-assistant.git</connection>
+        <developerConnection>scm:git:git@github.com:cyberrangecz/backend-adaptive-smart-assistant.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Mário Murín</name>
+            <email>murin@cshub.cz</email>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
@@ -107,7 +122,6 @@
             <scope>runtime</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
