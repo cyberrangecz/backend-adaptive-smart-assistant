@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class SuitableTaskResponseDto {
 
-    @ApiModelProperty(value = "Returns the number representing the suitable task for a given participant", example = "1")
-    private int suitableTask;
+  @ApiModelProperty(
+      value = "Returns the number representing the suitable task for a given participant",
+      example = "1")
+  private int suitableTask;
 }
