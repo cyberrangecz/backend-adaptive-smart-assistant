@@ -231,7 +231,6 @@
                         <arg>${skipChecks?:"-Xplugin:ErrorProne"}</arg>
                     </compilerArgs>
                     <release>${java.version}</release>
-                    <encoding>${project.build.sourceEncoding}</encoding>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>
