@@ -21,6 +21,6 @@ jobs:
     secrets:
       NVD_API: ${{ secrets.NVD_API }}
     with:
-      MAVEN_CLI_OPTS: ""
+      MAVEN_CLI_OPTS: "-q"
       IMAGE_NAME: "adaptive-smart-assistant"
       VERSION_PATH: "pom.xml"
