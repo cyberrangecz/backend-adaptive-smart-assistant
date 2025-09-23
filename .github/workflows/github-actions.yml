@@ -1,4 +1,4 @@
-name: Adaptive training assistant CI
+name: Adaptive smart assistant CI
 
 on:
   push:
@@ -17,9 +17,11 @@ on:
 jobs:
   # This will create docker image as well
   java_template:
-    uses: cyberrangecz/actions-templates/.github/workflows/java_template.yml@master
+    uses: cyberrangecz/actions-templates/.github/workflows/java_template.yml@feat/master
     secrets:
       NVD_API: ${{ secrets.NVD_API }}
+      OSS_INDEX_USER: ${{ secrets.OSS_INDEX_USER }}
+      OSS_INDEX_TOKEN: ${{ secrets.OSS_INDEX_TOKEN }}
     with:
       MAVEN_CLI_OPTS: ""
       IMAGE_NAME: "adaptive-smart-assistant"
