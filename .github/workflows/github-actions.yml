@@ -17,7 +17,7 @@ on:
 jobs:
   # This will create docker image as well
   java_template:
-    uses: cyberrangecz/actions-templates/.github/workflows/java_template.yml@feat/master
+    uses: cyberrangecz/actions-templates/.github/workflows/java_template.yml@master
     secrets:
       NVD_API: ${{ secrets.NVD_API }}
       OSS_INDEX_USER: ${{ secrets.OSS_INDEX_USER }}
